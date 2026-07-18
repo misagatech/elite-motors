@@ -1,43 +1,110 @@
+/* ===========================
+   ELITE MOTORS
+   Version 1.0
+===========================*/
+
+:root{
+
+    --gold:#D4AF37;
+    --gold-hover:#e8c252;
+    --black:#090909;
+    --black2:#111111;
+    --black3:#1b1b1b;
+    --gray:#9b9b9b;
+    --white:#ffffff;
+    --radius:18px;
+
+}
+
 *{
     margin:0;
     padding:0;
     box-sizing:border-box;
 }
 
+html{
+    scroll-behavior:smooth;
+}
+
 body{
 
-    background:#090909;
-    color:white;
+    background:var(--black);
+    color:var(--white);
     font-family:'Poppins',sans-serif;
 
 }
 
+/* ===========================
+HEADER
+===========================*/
+
 header{
 
+    position:fixed;
+
+    top:0;
+
+    left:0;
+
+    width:100%;
+
     display:flex;
+
     justify-content:space-between;
+
     align-items:center;
 
-    padding:25px 8%;
+    padding:18px 8%;
 
-    border-bottom:1px solid #2a2a2a;
+    background:rgba(10,10,10,.92);
+
+    backdrop-filter:blur(15px);
+
+    z-index:999;
+
+    border-bottom:1px solid rgba(212,175,55,.15);
 
 }
 
 .logo{
 
-    color:#D4AF37;
+    display:flex;
+
+    align-items:center;
+
+    gap:18px;
+
+}
+
+.logo img{
+
+    width:70px;
+
+}
+
+.logo h2{
+
+    color:var(--gold);
 
     font-size:30px;
 
-    font-weight:700;
+}
+
+.logo p{
+
+    color:#bbbbbb;
+
+    font-size:13px;
+
+    letter-spacing:2px;
 
 }
 
 nav{
 
     display:flex;
-    gap:40px;
+
+    gap:35px;
 
 }
 
@@ -47,47 +114,206 @@ nav a{
 
     text-decoration:none;
 
+    transition:.3s;
+
 }
+
+nav a:hover{
+
+    color:var(--gold);
+
+}
+
+/* ===========================
+HERO
+===========================*/
+/* HERO */
 
 .hero{
 
-    text-align:center;
+    height:100vh;
 
-    padding:70px 20px;
+    background:url("../img/hero.png");
+
+    background-size:cover;
+
+    background-position:center;
+
+    background-repeat:no-repeat;
+
+    display:flex;
+
+    align-items:center;
+
+    padding-left:8%;
+
+    position:relative;
 
 }
 
-.hero h1{
+.overlay{
 
-    font-size:48px;
+    position:absolute;
 
-    margin-bottom:15px;
+    inset:0;
+
+    background:linear-gradient(
+        90deg,
+        rgba(0,0,0,.55) 0%,
+        rgba(0,0,0,.25) 50%,
+        rgba(0,0,0,.10) 100%
+    );
 
 }
 
-.hero p{
+.hero-content{
 
-    color:#bdbdbd;
+    position:relative;
+
+    z-index:2;
+
+    max-width:600px;
+
+}
+
+.hero-logo{
+
+    width:320px;
+
+    margin-bottom:20px;
+
+}
+
+.hero-slogan{
+
+    color:#D4AF37;
+
+    letter-spacing:3px;
+
+    font-size:18px;
+
+    display:block;
 
     margin-bottom:30px;
 
 }
 
-.hero input{
+.hero h1{
 
-    width:450px;
+    font-size:82px;
 
-    max-width:90%;
+    line-height:82px;
 
-    padding:16px;
+    font-weight:700;
 
-    border:none;
-
-    border-radius:50px;
-
-    font-size:16px;
+    margin-bottom:30px;
 
 }
+
+.linea-dorada{
+
+    width:180px;
+
+    height:4px;
+
+    background:#D4AF37;
+
+    margin-bottom:30px;
+
+}
+
+.hero p{
+
+    color:#e3e3e3;
+
+    font-size:26px;
+
+    line-height:42px;
+
+    margin-bottom:45px;
+
+}
+
+.btn-gold{
+
+    display:inline-block;
+
+    padding:18px 38px;
+
+    border:2px solid #D4AF37;
+
+    color:#D4AF37;
+
+    text-decoration:none;
+
+    border-radius:10px;
+
+    font-weight:600;
+
+    font-size:18px;
+
+    transition:.35s;
+
+}
+
+.btn-gold:hover{
+
+    background:#D4AF37;
+
+    color:#111;
+
+}
+/* ===========================
+FILTROS
+===========================*/
+
+.filtros{
+
+    width:90%;
+
+    margin:auto;
+
+    display:flex;
+
+    flex-wrap:wrap;
+
+    gap:15px;
+
+    justify-content:center;
+
+    padding:60px 0;
+
+}
+
+.filtros button{
+
+    background:#1b1b1b;
+
+    border:1px solid #2d2d2d;
+
+    color:white;
+
+    padding:12px 28px;
+
+    border-radius:40px;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+}
+
+.filtros button:hover{
+
+    background:var(--gold);
+
+    color:black;
+
+}
+
+/* ===========================
+CATALOGO
+===========================*/
 
 .catalogo{
 
@@ -97,86 +323,50 @@ nav a{
 
     display:grid;
 
-    grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+    grid-template-columns:repeat(auto-fit,minmax(340px,1fr));
 
     gap:35px;
 
-    padding-bottom:80px;
+    padding-bottom:100px;
 
 }
 
-.card{
+/* Aquí irán las tarjetas dinámicas */
 
-    background:#151515;
+/* ===========================
+RESPONSIVE
+===========================*/
 
-    border-radius:18px;
+@media(max-width:900px){
 
-    overflow:hidden;
+nav{
 
-    transition:.35s;
-
-    border:1px solid #2a2a2a;
-
-}
-
-.card:hover{
-
-    transform:translateY(-8px);
-
-    border-color:#D4AF37;
+display:none;
 
 }
 
-.card img{
+.hero h1{
 
-    width:100%;
-
-    height:230px;
-
-    object-fit:cover;
+font-size:45px;
 
 }
 
-.info{
+.hero p{
 
-    padding:25px;
-
-}
-
-.info h2{
-
-    margin-bottom:12px;
+font-size:17px;
 
 }
 
-.info span{
+.logo h2{
 
-    color:#D4AF37;
-
-    font-size:30px;
-
-    font-weight:700;
+font-size:22px;
 
 }
 
-button{
+.logo img{
 
-    width:100%;
+width:55px;
 
-    margin-top:25px;
-
-    padding:15px;
-
-    border:none;
-
-    border-radius:10px;
-
-    background:#D4AF37;
-
-    cursor:pointer;
-
-    font-weight:bold;
-
-    font-size:16px;
+}
 
 }
