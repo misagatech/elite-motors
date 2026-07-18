@@ -26,7 +26,6 @@ body {
   background: var(--black);
   color: var(--white);
 }
-
 /* ======================================== */
 /* 2. HEADER                                */
 /* ======================================== */
@@ -62,39 +61,14 @@ body {
 .header-logo {
   display: flex;
   align-items: center;
-  gap: 12px;
   text-decoration: none;
 }
 
-/* En style.css - Sección HEADER */
 .header-logo img {
-  height: 40px;
+  height: 50px; /* Aumentado de 40px a 50px */
   width: auto;
   transition: height 0.3s ease;
-  object-fit: contain; /* ← AÑADIR ESTO */
-}
-
-/* En móvil (dentro de @media max-width: 768px) */
-@media (max-width: 768px) {
-  .header-logo img {
-    height: 32px; /* ← YA ESTÁ BIEN */
-  }
-  
-  /* AÑADIR ESTO para que el logo no se deforme */
-  .header-logo {
-    gap: 8px;
-  }
-}
-
-.header-logo-text {
-  font-size: 22px;
-  font-weight: 700;
-  color: white;
-  letter-spacing: 2px;
-}
-
-.header-logo-text span {
-  color: #D4AF37;
+  object-fit: contain;
 }
 
 .header-nav {
@@ -162,7 +136,7 @@ body {
 }
 
 /* ======================================== */
-/* 3. HERO                                 */
+/* 3. HERO (AJUSTADO)                       */
 /* ======================================== */
 
 .hero {
@@ -174,6 +148,7 @@ body {
   background-repeat: no-repeat;
   display: flex;
   align-items: center;
+  padding-top: 80px; /* NUEVO: espacio para el header */
   padding-left: 8%;
   padding-right: 8%;
   position: relative;
@@ -197,19 +172,10 @@ body {
   width: 100%;
 }
 
-/* En style.css - Sección HERO */
 .hero-logo {
-  width: clamp(180px, 28vw, 320px);
-  margin-bottom: clamp(12px, 2vw, 20px);
-  object-fit: contain; /* ← AÑADIR ESTO */
-}
-
-/* En móvil (dentro de @media max-width: 768px) */
-@media (max-width: 768px) {
-  .hero-logo {
-    width: clamp(150px, 40vw, 200px);
-    margin-bottom: 16px; /* ← AJUSTAR */
-  }
+  width: clamp(200px, 28vw, 350px); /* Aumentado el máximo */
+  margin-bottom: clamp(16px, 2.5vw, 30px);
+  object-fit: contain;
 }
 
 .hero-slogan {
@@ -222,8 +188,8 @@ body {
 }
 
 .hero h1 {
-  font-size: clamp(40px, 7vw, 82px);
-  line-height: clamp(40px, 7.2vw, 82px);
+  font-size: clamp(36px, 5.5vw, 68px); /* REDUCIDO de 7vw a 5.5vw, máximo de 82px a 68px */
+  line-height: clamp(38px, 5.8vw, 70px);
   font-weight: 700;
   margin-bottom: clamp(16px, 2.5vw, 30px);
   color: white;
@@ -239,8 +205,8 @@ body {
 
 .hero p {
   color: #e3e3e3;
-  font-size: clamp(16px, 2vw, 26px);
-  line-height: clamp(26px, 3vw, 42px);
+  font-size: clamp(16px, 1.8vw, 24px); /* REDUCIDO de 2vw a 1.8vw */
+  line-height: clamp(26px, 2.8vw, 38px);
   margin-bottom: clamp(24px, 3.5vw, 45px);
   max-width: 90%;
   font-weight: 300;
