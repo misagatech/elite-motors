@@ -2,56 +2,55 @@
 <html lang="es">
 
 <head>
-
     <meta charset="UTF-8">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Elite Motors</title>
-
+    <title>Elite Motors - Vehículos de Lujo</title>
+    
+    <!-- CSS -->
     <link rel="stylesheet" href="css/style.css">
-
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
-        rel="stylesheet">
-
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome (para iconos) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 
 <body>
+    <!-- ======================================== -->
+    <!-- HEADER                                   -->
+    <!-- ======================================== -->
+    <header class="header" id="header">
+        <div class="header-container">
+            <a href="#inicio" class="header-logo">
+                <img src="img/logo.png" alt="Elite Motors">
+                <span class="header-logo-text">ELITE<span>MOTORS</span></span>
+            </a>
 
-    <header>
+            <nav class="header-nav" id="headerNav">
+                <a href="#inicio">Inicio</a>
+                <a href="#inventario">Inventario</a>
+                <a href="#contacto">Contacto</a>
+            </nav>
 
-        <div class="logo">
-
-            <img src="img/logo.png">
-
-            <div>
-
-                <h2>ELITE MOTORS</h2>
-
-                <p>Exclusividad que te lleva más lejos</p>
-
+            <div class="header-hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
             </div>
-
         </div>
-
-        <nav>
-
-            <a href="">Inicio</a>
-
-            <a href="">Inventario</a>
-
-            <a href="">Contacto</a>
-
-        </nav>
-
     </header>
 
-    <section class="hero">
+    <!-- Overlay para menú móvil -->
+    <div class="header-overlay" id="headerOverlay"></div>
 
+    <!-- ======================================== -->
+    <!-- HERO                                     -->
+    <!-- ======================================== -->
+    <section class="hero" id="inicio">
         <div class="overlay"></div>
 
         <div class="hero-content">
-
             <img src="img/logo.png" class="hero-logo" alt="Elite Motors">
 
             <span class="hero-slogan">
@@ -73,31 +72,71 @@
             <a href="#inventario" class="btn-gold">
                 VER INVENTARIO →
             </a>
-
         </div>
-
     </section>
 
-    <section class="filtros">
+    <!-- ======================================== -->
+    <!-- SECCIÓN FILTROS (provisional)            -->
+    <!-- ======================================== -->
+    <section class="filtros-section" id="inventario">
+        <div class="container">
+            <div class="filtros-header">
+                <span class="filtros-badge">NUESTRO INVENTARIO</span>
+                <h2>VEHÍCULOS <span class="text-gold">DISPONIBLES</span></h2>
+                <div class="linea-dorada-center"></div>
+            </div>
 
-        <button>Todos</button>
-
-        <button>BMW</button>
-
-        <button>Mercedes</button>
-
-        <button>Mazda</button>
-
-        <button>Automático</button>
-
-        <button>Manual</button>
-
+            <div class="filtros">
+                <button class="filtro-btn active" data-filter="all">Todos</button>
+                <button class="filtro-btn" data-filter="bmw">BMW</button>
+                <button class="filtro-btn" data-filter="mercedes">Mercedes</button>
+                <button class="filtro-btn" data-filter="mazda">Mazda</button>
+                <button class="filtro-btn" data-filter="audi">Audi</button>
+            </div>
+        </div>
     </section>
 
+    <!-- ======================================== -->
+    <!-- CATÁLOGO                                 -->
+    <!-- ======================================== -->
     <section class="catalogo">
-
+        <div class="container">
+            <div class="catalogo-grid" id="vehiculosGrid">
+                <!-- Las tarjetas se generarán con JavaScript -->
+            </div>
+        </div>
     </section>
 
+    <!-- ======================================== -->
+    <!-- FOOTER (próximamente)                    -->
+    <!-- ======================================== -->
+    <footer class="footer" id="contacto">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <img src="img/logo.png" alt="Elite Motors" class="footer-logo-img">
+                    <span class="footer-logo-text">ELITE<span>MOTORS</span></span>
+                </div>
+                <p class="footer-text">
+                    Vehículos seleccionados con calidad, respaldo<br>
+                    y el mejor precio del mercado.
+                </p>
+                <div class="footer-social">
+                    <a href="#" class="footer-social-link"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="footer-social-link"><i class="fab fa-facebook"></i></a>
+                    <a href="#" class="footer-social-link"><i class="fab fa-whatsapp"></i></a>
+                </div>
+                <p class="footer-copy">
+                    © 2026 Elite Motors. Todos los derechos reservados.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ======================================== -->
+    <!-- JAVASCRIPT                               -->
+    <!-- ======================================== -->
+    <script src="js/main.js"></script>
 </body>
 
 </html>
