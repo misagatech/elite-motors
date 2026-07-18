@@ -880,3 +880,13 @@ body {
     font-size: 16px;
   }
 }
+/* ---- ESPACIO ENTRE SECCIONES ---- */
+.filtros-section {
+  padding-top: 20px; /* Reduce el espacio superior */
+}
+
+@media (max-width: 768px) {
+  .filtros-section {
+    padding-top: 10px;
+  }
+}
