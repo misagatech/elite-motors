@@ -152,8 +152,9 @@ body {
   padding-top: 80px;
   padding-left: 8%;
   padding-right: 8%;
+  padding-bottom: 60px;
   position: relative;
-  margin-bottom: 30px; /* ESPACIO ENTRE HERO Y FILTROS */
+  margin-bottom: 0;
 }
 
 .overlay {
@@ -240,7 +241,7 @@ body {
 /* ======================================== */
 
 .filtros-section {
-  padding: 40px 0 30px 0; /* REDUCIDO el padding superior */
+  padding: 60px 0 30px 0;
   background: var(--black);
 }
 
@@ -657,7 +658,7 @@ body {
   .hero {
     padding-left: 6%;
     padding-right: 6%;
-    margin-bottom: 20px;
+    padding-bottom: 50px;
   }
 
   .hero-content {
@@ -666,6 +667,10 @@ body {
 
   .hero-logo {
     width: clamp(160px, 25vw, 250px);
+  }
+
+  .filtros-section {
+    padding: 50px 0 25px 0;
   }
 }
 
@@ -714,11 +719,11 @@ body {
     padding-top: 70px;
     padding-left: 5%;
     padding-right: 5%;
+    padding-bottom: 40px;
     min-height: 500px;
     align-items: center;
     text-align: center;
     justify-content: center;
-    margin-bottom: 15px;
   }
 
   .overlay {
@@ -878,15 +883,5 @@ body {
 
   .footer-logo-text {
     font-size: 16px;
-  }
-}
-/* ---- ESPACIO ENTRE SECCIONES ---- */
-.filtros-section {
-  padding-top: 20px; /* Reduce el espacio superior */
-}
-
-@media (max-width: 768px) {
-  .filtros-section {
-    padding-top: 10px;
   }
 }
