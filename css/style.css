@@ -375,9 +375,14 @@ body {
   opacity: 1;
 }
 
+/* ======================================== */
+/* 6a. TARJETAS - IMAGEN (CORREGIDO)       */
+/* ======================================== */
+
 .card-imagen {
   position: relative;
-  aspect-ratio: 16/10;
+  width: 100%;
+  padding-bottom: 95%; /* ← CAMBIADO: más alto para fotos verticales */
   overflow: hidden;
   background: #0a0a0a;
   border-radius: 18px 18px 0 0;
@@ -385,9 +390,13 @@ body {
 }
 
 .card-imagen img {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: cover; /* Recorta la imagen para llenar el espacio */
+  object-position: center 25%; /* ← NUEVO: centra la imagen un poco más arriba */
   display: block;
   transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
@@ -750,20 +759,27 @@ body {
   margin-bottom: 20px;
 }
 
-/* Galería - Mejorada */
+/* ======================================== */
+/* 8a. GALERÍA DE DETALLE (CORREGIDO)      */
+/* ======================================== */
+
 .detalle-gallery-main {
   border-radius: 18px;
   overflow: hidden;
   background: #0a0a0a;
   margin-bottom: 16px;
   box-shadow: 0 8px 40px rgba(0, 0, 0, 0.5);
+  aspect-ratio: 4/5; /* ← NUEVO: proporción vertical para fotos de autos */
+  max-height: 700px;
 }
 
 .detalle-gallery-main img {
   width: 100%;
-  height: 420px;
-  object-fit: cover;
+  height: 100%;
+  object-fit: contain; /* ← CAMBIADO: muestra la foto completa */
+  display: block;
   transition: transform 0.4s ease;
+  background: #0a0a0a;
 }
 
 .detalle-gallery-main:hover img {
@@ -778,7 +794,7 @@ body {
 
 .detalle-thumb {
   width: 100%;
-  height: 90px;
+  aspect-ratio: 4/3; /* ← NUEVO: miniaturas horizontales */
   object-fit: cover;
   border-radius: 12px;
   cursor: pointer;
@@ -1044,6 +1060,11 @@ body {
   .relacionados-grid {
     grid-template-columns: repeat(2, 1fr);
   }
+
+  .detalle-gallery-main {
+    aspect-ratio: 3/4;
+    max-height: 600px;
+  }
 }
 
 /* ---- MÓVILES ---- */
@@ -1169,7 +1190,7 @@ body {
   }
 
   .card-imagen {
-    aspect-ratio: 4/3;
+    padding-bottom: 85%; /* ← Menos alto en móvil */
   }
 
   .card-title {
@@ -1198,8 +1219,13 @@ body {
     gap: 30px;
   }
   
+  .detalle-gallery-main {
+    aspect-ratio: 3/4;
+    max-height: 500px;
+  }
+  
   .detalle-gallery-main img {
-    height: 280px;
+    object-fit: contain;
   }
   
   .detalle-gallery-thumbs {
@@ -1208,7 +1234,7 @@ body {
   }
   
   .detalle-thumb {
-    height: 60px;
+    aspect-ratio: 1/1; /* ← Cuadradas en móvil */
   }
   
   .detalle-header h1 {
@@ -1317,48 +1343,16 @@ body {
   }
 
   .card-imagen {
-    aspect-ratio: 1/1;
+    padding-bottom: 100%; /* ← Muy vertical en móviles pequeños */
   }
 
   /* DETALLE */
-  .detalle-gallery-main img {
-    height: 200px;
+  .detalle-gallery-main {
+    aspect-ratio: 2/3;
+    max-height: 400px;
   }
   
   .detalle-thumb {
     height: 50px;
   }
   
-  .detalle-header h1 {
-    font-size: 24px;
-  }
-  
-  .detalle-precio {
-    font-size: 22px;
-  }
-  
-  .detalle-especificaciones {
-    grid-template-columns: 1fr;
-  }
-  
-  .btn-whatsapp {
-    padding: 14px 24px;
-    font-size: 14px;
-  }
-
-  .relacionados-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .relacionado-card img {
-    height: 120px;
-  }
-
-  .footer-logo-img {
-    height: 26px;
-  }
-
-  .footer-logo-text {
-    font-size: 16px;
-  }
-}
