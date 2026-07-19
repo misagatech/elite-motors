@@ -1,0 +1,232 @@
+/* ======================================== */
+/* PANEL ADMINISTRADOR                       */
+/* ======================================== */
+
+.admin-panel {
+  padding: 140px 0 80px 0;
+  background: var(--black);
+  min-height: 100vh;
+}
+
+.admin-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 40px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.admin-header h1 {
+  font-size: 32px;
+  color: white;
+  font-weight: 700;
+}
+
+.admin-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.admin-card {
+  background: var(--black-secondary);
+  border-radius: 12px;
+  border: 1px solid #1a1a1a;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.admin-card:hover {
+  border-color: var(--gold);
+}
+
+.admin-card-imagen {
+  height: 160px;
+  overflow: hidden;
+  background: #1a1a1a;
+}
+
+.admin-card-imagen img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.admin-card-body {
+  padding: 16px;
+}
+
+.admin-card-body h3 {
+  color: white;
+  font-size: 18px;
+  margin-bottom: 4px;
+}
+
+.admin-card-body .precio {
+  color: var(--gold);
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.admin-card-acciones {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+  flex-wrap: wrap;
+}
+
+.admin-card-acciones button {
+  padding: 6px 14px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.btn-editar {
+  background: var(--gold);
+  color: #111;
+}
+
+.btn-editar:hover {
+  background: var(--gold-light);
+}
+
+.btn-vendido {
+  background: #ff6b35;
+  color: white;
+}
+
+.btn-vendido:hover {
+  background: #e55a2b;
+}
+
+.btn-eliminar {
+  background: #ff4757;
+  color: white;
+}
+
+.btn-eliminar:hover {
+  background: #e03a4a;
+}
+
+/* MODAL */
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.8);
+  z-index: 2000;
+  overflow-y: auto;
+  padding: 40px 20px;
+}
+
+.modal.active {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-content {
+  background: var(--black-secondary);
+  border-radius: 16px;
+  padding: 40px;
+  max-width: 600px;
+  width: 100%;
+  border: 1px solid #1a1a1a;
+  position: relative;
+}
+
+.modal-close {
+  position: absolute;
+  top: 16px;
+  right: 20px;
+  font-size: 28px;
+  color: #888;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.modal-close:hover {
+  color: white;
+}
+
+.modal-content h2 {
+  color: white;
+  font-size: 24px;
+  margin-bottom: 24px;
+}
+
+.form-group {
+  margin-bottom: 16px;
+}
+
+.form-group label {
+  display: block;
+  color: #aaa;
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 10px 14px;
+  background: #1a1a1a;
+  border: 1px solid #333;
+  border-radius: 8px;
+  color: white;
+  font-size: 14px;
+  transition: border-color 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: var(--gold);
+}
+
+.form-group textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.form-group input[type="file"] {
+  padding: 8px;
+  background: transparent;
+}
+
+.form-group small {
+  display: block;
+  color: #666;
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .admin-panel {
+    padding: 120px 0 40px 0;
+  }
+
+  .admin-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .admin-header h1 {
+    font-size: 24px;
+  }
+
+  .modal-content {
+    padding: 24px;
+  }
+}
