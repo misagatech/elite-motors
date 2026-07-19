@@ -3,6 +3,15 @@
 // ========================================
 
 // ========================================
+// 0. PROTEGER ADMIN - VERIFICAR AUTENTICACIÓN
+// ========================================
+// Esta sección debe ir al PRINCIPIO del archivo
+auth.onAuthStateChanged((user) => {
+  if (!user) {
+    window.location.href = 'login.html';
+  }
+});
+// ========================================
 // 1. VARIABLES GLOBALES
 // ========================================
 let vehiculoEditando = null;
