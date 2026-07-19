@@ -703,3 +703,89 @@
     justify-content: center;
   }
 }
+/* ======================================== */
+/* FOTO DE PORTADA - ESTILOS                */
+/* ======================================== */
+
+.modal-foto-item.foto-portada {
+  border: 3px solid var(--gold);
+  box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+}
+
+.modal-foto-item.foto-portada .modal-foto-nombre {
+  background: rgba(212, 175, 55, 0.85);
+  color: #000;
+  font-weight: 700;
+}
+
+.modal-foto-acciones {
+  position: absolute;
+  bottom: 8px;
+  left: 8px;
+  right: 8px;
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 2;
+}
+
+.modal-foto-item:hover .modal-foto-acciones {
+  opacity: 1;
+}
+
+.modal-foto-item .btn-portada {
+  padding: 4px 12px;
+  border: none;
+  border-radius: 6px;
+  background: var(--gold);
+  color: #000;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.modal-foto-item .btn-portada:hover {
+  background: var(--gold-light);
+  transform: scale(1.05);
+}
+
+.modal-foto-item .btn-eliminar-foto {
+  position: static;
+  width: auto;
+  height: auto;
+  padding: 4px 12px;
+  border-radius: 6px;
+  border: none;
+  background: rgba(255, 71, 87, 0.9);
+  color: white;
+  cursor: pointer;
+  font-size: 11px;
+  font-weight: 700;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  opacity: 1;
+}
+
+.modal-foto-item .btn-eliminar-foto:hover {
+  background: #ff4757;
+  transform: scale(1.05);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .modal-foto-acciones {
+    opacity: 1;
+  }
+  
+  .modal-foto-item .btn-portada,
+  .modal-foto-item .btn-eliminar-foto {
+    padding: 3px 8px;
+    font-size: 10px;
+  }
+}
