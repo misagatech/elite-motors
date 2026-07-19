@@ -5,12 +5,12 @@
 // ========================================
 // 0. PROTEGER ADMIN - VERIFICAR AUTENTICACIÓN
 // ========================================
-// Esta sección debe ir al PRINCIPIO del archivo
 auth.onAuthStateChanged((user) => {
   if (!user) {
     window.location.href = 'login.html';
   }
 });
+
 // ========================================
 // 1. VARIABLES GLOBALES
 // ========================================
@@ -54,7 +54,7 @@ window.addEventListener('resize', function() {
 });
 
 // ========================================
-// 4. CARGAR VEHÍCULOS
+// 4. CARGAR VEHÍCULOS - CON CONTADOR DE FOTOS
 // ========================================
 function cargarVehiculosAdmin() {
   const grid = document.getElementById('adminGrid');
@@ -79,10 +79,11 @@ function cargarVehiculosAdmin() {
       snapshot.forEach(doc => {
         const v = doc.data();
         const id = doc.id;
-        // Usar la PRIMERA foto si existe, sino placeholder SVG
-        const img = v.fotos && v.fotos.length > 0 
-          ? v.fotos[0] 
-          : 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="400" height="300"%3E%3Crect width="400" height="300" fill="%231a1a1a"/%3E%3Ctext x="200" y="150" font-family="Arial" font-size="24" fill="%23D4AF37" text-anchor="middle" dominant-baseline="middle"%3EElite Motors%3C/text%3E%3C/svg%3E';
+        const fotos = v.fotos || [];
+        const totalFotos = fotos.length;
+        
+        // Usar la primera foto si existe, sino placeholder
+        const img = totalFotos > 0 ? fotos[0] : 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="400" height="300"%3E%3Crect width="400" height="300" fill="%231a1a1a"/%3E%3Ctext x="200" y="150" font-family="Arial" font-size="24" fill="%23D4AF37" text-anchor="middle" dominant-baseline="middle"%3EElite Motors%3C/text%3E%3C/svg%3E';
 
         html += `
           <div class="admin-card" data-id="${id}">
@@ -90,6 +91,9 @@ function cargarVehiculosAdmin() {
               <img src="${img}" alt="${v.marca} ${v.modelo}" loading="lazy">
               <span class="admin-card-estado ${v.estado === 'vendido' ? 'vendido' : 'disponible'}">
                 ${v.estado === 'vendido' ? 'VENDIDO' : 'DISPONIBLE'}
+              </span>
+              <span class="admin-card-fotos-badge">
+                📸 ${totalFotos}
               </span>
             </div>
             <div class="admin-card-body">
@@ -102,6 +106,7 @@ function cargarVehiculosAdmin() {
               </div>
               <div class="admin-card-acciones">
                 <button class="btn-editar" onclick="editarVehiculo('${id}')">✏️ Editar</button>
+                <button class="btn-fotos" onclick="verFotos('${id}')">📸 Fotos (${totalFotos})</button>
                 <button class="btn-vendido" onclick="toggleEstado('${id}')">
                   ${v.estado === 'vendido' ? '📦 Disponible' : '🚫 Vendido'}
                 </button>
@@ -119,6 +124,7 @@ function cargarVehiculosAdmin() {
       grid.innerHTML = '<p style="color: #ff4757; text-align: center;">Error al cargar vehículos</p>';
     });
 }
+
 // ========================================
 // 5. AGREGAR/EDITAR VEHÍCULO
 // ========================================
@@ -170,16 +176,23 @@ function editarVehiculo(id) {
 }
 
 // ========================================
-// 7. GUARDAR VEHÍCULO
+// 7. GUARDAR VEHÍCULO (CON NOMBRES AUTOMÁTICOS)
 // ========================================
 document.getElementById('formVehiculo')?.addEventListener('submit', async function(e) {
   e.preventDefault();
   
   const id = document.getElementById('vehiculoId').value;
+  const marca = document.getElementById('marca').value;
+  const modelo = document.getElementById('modelo').value;
+  const version = document.getElementById('version').value;
+  
+  // Crear nombre base para las fotos
+  const nombreBase = `${marca.toLowerCase()}-${modelo.toLowerCase()}`.replace(/\s+/g, '-');
+  
   const data = {
-    marca: document.getElementById('marca').value,
-    modelo: document.getElementById('modelo').value,
-    version: document.getElementById('version').value,
+    marca: marca,
+    modelo: modelo,
+    version: version,
     año: parseInt(document.getElementById('año').value),
     precio: parseInt(document.getElementById('precio').value),
     kilometraje: parseInt(document.getElementById('kilometraje').value),
@@ -189,7 +202,7 @@ document.getElementById('formVehiculo')?.addEventListener('submit', async functi
     descripcion: document.getElementById('descripcion').value
   };
 
-  // Subir imágenes
+  // Subir imágenes con nombres automáticos
   const files = document.getElementById('fotos').files;
   if (files.length > 0 && files.length < 2) {
     alert('Selecciona al menos 2 fotos (máximo 8)');
@@ -201,8 +214,20 @@ document.getElementById('formVehiculo')?.addEventListener('submit', async functi
   }
 
   const fotosUrls = [];
-  for (const file of files) {
-    const storageRef = storage.ref(`vehiculos/${Date.now()}_${file.name}`);
+  for (let i = 0; i < files.length; i++) {
+    const file = files[i];
+    // Crear nombre automático: portada, 1, 2, 3...
+    let nombreFoto;
+    if (i === 0) {
+      nombreFoto = `${nombreBase}-portada`;
+    } else {
+      nombreFoto = `${nombreBase}-${i}`;
+    }
+    // Obtener extensión del archivo original
+    const extension = file.name.split('.').pop();
+    const nombreCompleto = `${nombreFoto}.${extension}`;
+    
+    const storageRef = storage.ref(`vehiculos/${Date.now()}_${nombreCompleto}`);
     await storageRef.put(file);
     const url = await storageRef.getDownloadURL();
     fotosUrls.push(url);
@@ -229,7 +254,146 @@ document.getElementById('formVehiculo')?.addEventListener('submit', async functi
 });
 
 // ========================================
-// 8. ELIMINAR VEHÍCULO
+// 8. VER FOTOS DE UN VEHÍCULO
+// ========================================
+function verFotos(id) {
+  if (typeof db === 'undefined') return;
+
+  db.collection('vehiculos').doc(id).get()
+    .then(doc => {
+      if (!doc.exists) return;
+      const v = doc.data();
+      const fotos = v.fotos || [];
+      const marca = v.marca || '';
+      const modelo = v.modelo || '';
+      
+      // Crear modal de fotos
+      const modal = document.createElement('div');
+      modal.className = 'modal-fotos active';
+      modal.dataset.vehiculoId = id;
+      modal.innerHTML = `
+        <div class="modal-fotos-content">
+          <button class="modal-fotos-close" onclick="this.closest('.modal-fotos').remove()">&times;</button>
+          <h3>${marca} ${modelo} - <span>Fotos (${fotos.length})</span></h3>
+          <div class="modal-fotos-grid">
+            ${fotos.map((url, index) => {
+              const nombre = index === 0 ? 'Portada' : `Foto ${index}`;
+              return `
+                <div class="modal-foto-item">
+                  <img src="${url}" alt="${nombre}">
+                  <span class="modal-foto-nombre">${nombre}</span>
+                  <button class="btn-eliminar-foto" onclick="eliminarFoto('${id}', ${index})">🗑️</button>
+                </div>
+              `;
+            }).join('')}
+            ${fotos.length === 0 ? '<p style="color: #888; text-align:center; grid-column: 1/-1;">No hay fotos para este vehículo</p>' : ''}
+          </div>
+          <div class="modal-fotos-acciones">
+            <button class="btn-gold" onclick="agregarFotos('${id}')">➕ Agregar Fotos</button>
+            <button class="btn-gold" onclick="this.closest('.modal-fotos').remove()">Cerrar</button>
+          </div>
+        </div>
+      `;
+      document.body.appendChild(modal);
+    });
+}
+
+// ========================================
+// 9. AGREGAR FOTOS A UN VEHÍCULO
+// ========================================
+function agregarFotos(id) {
+  // Crear input file oculto
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.multiple = true;
+  input.accept = 'image/*';
+  input.style.display = 'none';
+  document.body.appendChild(input);
+  
+  input.addEventListener('change', async function(e) {
+    const files = e.target.files;
+    if (files.length === 0) return;
+    
+    try {
+      const doc = await db.collection('vehiculos').doc(id).get();
+      const v = doc.data();
+      const fotosExistentes = v.fotos || [];
+      const marca = v.marca || 'vehiculo';
+      const modelo = v.modelo || '';
+      const nombreBase = `${marca.toLowerCase()}-${modelo.toLowerCase()}`.replace(/\s+/g, '-');
+      
+      // Subir nuevas fotos con nombres automáticos
+      const nuevasFotos = [];
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        // El índice comienza desde donde quedaron las fotos existentes
+        const index = fotosExistentes.length + i;
+        const nombreFoto = index === 0 ? `${nombreBase}-portada` : `${nombreBase}-${index}`;
+        const extension = file.name.split('.').pop();
+        const nombreCompleto = `${nombreFoto}.${extension}`;
+        
+        const storageRef = storage.ref(`vehiculos/${Date.now()}_${nombreCompleto}`);
+        await storageRef.put(file);
+        const url = await storageRef.getDownloadURL();
+        nuevasFotos.push(url);
+      }
+      
+      // Combinar y actualizar
+      const todasLasFotos = [...fotosExistentes, ...nuevasFotos];
+      await db.collection('vehiculos').doc(id).update({
+        fotos: todasLasFotos
+      });
+      
+      alert(`✅ ${nuevasFotos.length} fotos agregadas correctamente`);
+      input.remove();
+      cargarVehiculosAdmin();
+      // Recargar modal de fotos
+      const modal = document.querySelector('.modal-fotos');
+      if (modal) {
+        verFotos(id);
+      }
+    } catch (error) {
+      alert('❌ Error al subir fotos: ' + error.message);
+    }
+  });
+  
+  input.click();
+}
+
+// ========================================
+// 10. ELIMINAR UNA FOTO
+// ========================================
+function eliminarFoto(id, index) {
+  if (!confirm('¿Eliminar esta foto?')) return;
+  
+  db.collection('vehiculos').doc(id).get()
+    .then(doc => {
+      if (!doc.exists) return;
+      const v = doc.data();
+      const fotos = v.fotos || [];
+      
+      // Eliminar la foto del array
+      fotos.splice(index, 1);
+      
+      return db.collection('vehiculos').doc(id).update({
+        fotos: fotos
+      });
+    })
+    .then(() => {
+      alert('✅ Foto eliminada');
+      cargarVehiculosAdmin();
+      // Recargar modal de fotos
+      const modal = document.querySelector('.modal-fotos');
+      if (modal) {
+        const id = modal.dataset.vehiculoId;
+        verFotos(id);
+      }
+    })
+    .catch(error => alert('❌ Error: ' + error.message));
+}
+
+// ========================================
+// 11. ELIMINAR VEHÍCULO
 // ========================================
 function eliminarVehiculo(id) {
   if (!confirm('¿Seguro que quieres eliminar este vehículo?')) return;
@@ -243,7 +407,7 @@ function eliminarVehiculo(id) {
 }
 
 // ========================================
-// 9. CAMBIAR ESTADO (Vendido/Disponible)
+// 12. CAMBIAR ESTADO (Vendido/Disponible)
 // ========================================
 function toggleEstado(id) {
   db.collection('vehiculos').doc(id).get()
@@ -259,7 +423,7 @@ function toggleEstado(id) {
 }
 
 // ========================================
-// 10. CERRAR SESIÓN
+// 13. CERRAR SESIÓN
 // ========================================
 document.getElementById('btnLogout')?.addEventListener('click', function(e) {
   e.preventDefault();
@@ -271,12 +435,16 @@ document.getElementById('btnLogout')?.addEventListener('click', function(e) {
 });
 
 // ========================================
-// 11. INICIALIZAR
+// 14. INICIALIZAR
 // ========================================
 document.addEventListener('DOMContentLoaded', function() {
   cargarVehiculosAdmin();
 });
 
+// Hacer funciones globales
 window.editarVehiculo = editarVehiculo;
 window.eliminarVehiculo = eliminarVehiculo;
 window.toggleEstado = toggleEstado;
+window.verFotos = verFotos;
+window.agregarFotos = agregarFotos;
+window.eliminarFoto = eliminarFoto;
