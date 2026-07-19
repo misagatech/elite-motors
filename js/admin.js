@@ -79,7 +79,7 @@ function cargarVehiculosAdmin() {
       snapshot.forEach(doc => {
         const v = doc.data();
         const id = doc.id;
-        const img = v.fotos && v.fotos.length > 0 ? v.fotos[0] : 'https://via.placeholder.com/400x300/1a1a1a/D4AF37?text=Elite+Motors';
+        const img = v.fotos && v.fotos.length > 0 ? v.fotos[0] : 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="400" height="300"%3E%3Crect width="400" height="300" fill="%231a1a1a"/%3E%3Ctext x="200" y="150" font-family="Arial" font-size="24" fill="%23D4AF37" text-anchor="middle" dominant-baseline="middle"%3EElite Motors%3C/text%3E%3C/svg%3E';
 
         html += `
           <div class="admin-card" data-id="${id}">
