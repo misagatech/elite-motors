@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elite Motors - Panel Administrador</title>
+    
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/admin.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+
+<body>
+    <header class="header" id="header">
+        <div class="header-container">
+            <a href="index.html" class="header-logo">
+                <img src="img/logo.png" alt="Elite Motors">
+            </a>
+            <nav class="header-nav" id="headerNav">
+                <a href="admin.html">Dashboard</a>
+                <a href="index.html">Ver página</a>
+                <a href="#" id="btnLogout">Cerrar Sesión</a>
+            </nav>
+            <div class="header-hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </header>
+    <div class="header-overlay" id="headerOverlay"></div>
+
+    <section class="admin-panel">
+        <div class="container">
+            <div class="admin-header">
+                <h1>Panel de Administración</h1>
+                <button class="btn-gold" id="btnAgregarVehiculo">
+                    <i class="fas fa-plus"></i> Agregar Vehículo
+                </button>
+            </div>
+
+            <!-- Lista de vehículos -->
+            <div class="admin-grid" id="adminGrid">
+                <!-- Se llena con JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- MODAL: Agregar/Editar Vehículo -->
+    <div class="modal" id="modalVehiculo">
+        <div class="modal-content">
+            <span class="modal-close" id="modalClose">&times;</span>
+            <h2 id="modalTitle">Agregar Vehículo</h2>
+            <form id="formVehiculo">
+                <input type="hidden" id="vehiculoId">
+                
+                <div class="form-group">
+                    <label>Marca</label>
+                    <input type="text" id="marca" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>Modelo</label>
+                    <input type="text" id="modelo" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>Versión</label>
+                    <input type="text" id="version">
+                </div>
+                
+                <div class="form-group">
+                    <label>Año</label>
+                    <input type="number" id="año" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>Precio ($)</label>
+                    <input type="number" id="precio" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>Kilometraje</label>
+                    <input type="number" id="kilometraje" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>Transmisión</label>
+                    <select id="transmision">
+                        <option value="Automático">Automático</option>
+                        <option value="Mecánico">Mecánico</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>Combustible</label>
+                    <select id="combustible">
+                        <option value="Gasolina">Gasolina</option>
+                        <option value="Diésel">Diésel</option>
+                        <option value="Híbrido">Híbrido</option>
+                        <option value="Eléctrico">Eléctrico</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>Estado</label>
+                    <select id="estado">
+                        <option value="disponible">Disponible</option>
+                        <option value="vendido">Vendido</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>Descripción</label>
+                    <textarea id="descripcion" rows="4"></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label>Fotos (mínimo 2, máximo 8)</label>
+                    <input type="file" id="fotos" multiple accept="image/*">
+                    <small>Selecciona entre 2 y 8 fotos</small>
+                </div>
+                
+                <button type="submit" class="btn-gold">Guardar</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    
+    <script src="js/firebase.js"></script>
+    <script src="js/admin.js"></script>
+</body>
+
+</html>
