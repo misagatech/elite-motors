@@ -34,15 +34,11 @@ if (hamburger && nav && overlay) {
   hamburger.addEventListener('click', toggleMenu);
   overlay.addEventListener('click', toggleMenu);
   
-  // Cerrar menú al hacer clic en un enlace
   nav.querySelectorAll('a').forEach(link => {
     link.addEventListener('click', toggleMenu);
   });
 }
 
-// ========================================
-// 3. CERRAR MENÚ AL REDIMENSIONAR
-// ========================================
 window.addEventListener('resize', function() {
   if (window.innerWidth > 768) {
     nav.classList.remove('open');
@@ -52,52 +48,20 @@ window.addEventListener('resize', function() {
 });
 
 // ========================================
-// 4. FILTROS (ejemplo con datos estáticos)
+// 3. VARIABLES GLOBALES
 // ========================================
-// Datos de ejemplo (luego vendrán de Firebase)
-const vehiculosEjemplo = [
-  {
-    id: 1,
-    marca: "BMW",
-    modelo: "120i",
-    año: 2022,
-    precio: 65000000,
-    kilometraje: 87295,
-    transmision: "Automático",
-    imagen: "img/bmw-120i.jpg",
-    estado: "disponible"
-  },
-  {
-    id: 2,
-    marca: "Mercedes",
-    modelo: "C200",
-    año: 2021,
-    precio: 78000000,
-    kilometraje: 45000,
-    transmision: "Automático",
-    imagen: "img/mercedes-c200.jpg",
-    estado: "disponible"
-  },
-  {
-    id: 3,
-    marca: "Mazda",
-    modelo: "CX-5",
-    año: 2023,
-    precio: 58000000,
-    kilometraje: 15000,
-    transmision: "Automático",
-    imagen: "img/mazda-cx5.jpg",
-    estado: "disponible"
-  }
-];
+let todosLosVehiculos = [];
+let filtroActual = 'all';
 
-// Función para renderizar vehículos
+// ========================================
+// 4. FUNCIÓN PARA RENDERIZAR VEHÍCULOS
+// ========================================
 function renderVehiculos(vehiculos) {
   const grid = document.getElementById('vehiculosGrid');
   
   if (!grid) return;
   
-  if (vehiculos.length === 0) {
+  if (!vehiculos || vehiculos.length === 0) {
     grid.innerHTML = `
       <div class="no-vehiculos">
         <p>No hay vehículos disponibles en este momento.</p>
@@ -106,25 +70,31 @@ function renderVehiculos(vehiculos) {
     return;
   }
   
-  grid.innerHTML = vehiculos.map(vehiculo => `
+  grid.innerHTML = vehiculos.map(vehiculo => {
+    // Usar imagen de Firebase o placeholder
+    const imagenUrl = vehiculo.fotos && vehiculo.fotos.length > 0 
+      ? vehiculo.fotos[0] 
+      : 'img/placeholder-car.jpg';
+    
+    return `
     <div class="vehiculo-card">
       <div class="card-imagen">
-        <img src="${vehiculo.imagen}" alt="${vehiculo.marca} ${vehiculo.modelo}">
-        <span class="card-estado estado-${vehiculo.estado}">
-          ${vehiculo.estado === 'disponible' ? '🟢 Disponible' : '🔴 Vendido'}
+        <img src="${imagenUrl}" alt="${vehiculo.marca} ${vehiculo.modelo}">
+        <span class="card-estado estado-${vehiculo.estado || 'disponible'}">
+          ${vehiculo.estado === 'vendido' ? '🔴 Vendido' : '🟢 Disponible'}
         </span>
       </div>
       
       <div class="card-body">
         <h3 class="card-title">${vehiculo.marca} ${vehiculo.modelo}</h3>
-        <div class="card-precio">$${vehiculo.precio.toLocaleString('es-CO')}</div>
+        <div class="card-precio">$${Number(vehiculo.precio).toLocaleString('es-CO')}</div>
         
         <div class="card-detalles">
           <span class="card-detalle-item">
-            <i class="fas fa-tachometer-alt"></i> ${vehiculo.kilometraje.toLocaleString()} km
+            <i class="fas fa-tachometer-alt"></i> ${Number(vehiculo.kilometraje).toLocaleString()} km
           </span>
           <span class="card-detalle-item">
-            <i class="fas fa-cog"></i> ${vehiculo.transmision}
+            <i class="fas fa-cog"></i> ${vehiculo.transmision || 'Automático'}
           </span>
         </div>
         
@@ -134,37 +104,123 @@ function renderVehiculos(vehiculos) {
         </a>
       </div>
     </div>
-  `).join('');
+  `}).join('');
 }
 
-// Función para filtrar vehículos
+// ========================================
+// 5. FUNCIÓN PARA FILTRAR
+// ========================================
 function filtrarVehiculos(filtro) {
+  if (!todosLosVehiculos || todosLosVehiculos.length === 0) {
+    renderVehiculos([]);
+    return;
+  }
+  
   if (filtro === 'all') {
-    renderVehiculos(vehiculosEjemplo);
+    renderVehiculos(todosLosVehiculos);
   } else {
-    const filtrados = vehiculosEjemplo.filter(v => 
-      v.marca.toLowerCase() === filtro.toLowerCase()
+    const filtrados = todosLosVehiculos.filter(v => 
+      v.marca && v.marca.toLowerCase() === filtro.toLowerCase()
     );
     renderVehiculos(filtrados);
   }
 }
 
 // ========================================
-// 5. EVENTOS DE FILTROS
+// 6. CARGAR VEHÍCULOS DESDE FIREBASE
 // ========================================
-document.addEventListener('DOMContentLoaded', function() {
-  // Renderizar vehículos iniciales
-  renderVehiculos(vehiculosEjemplo);
+function cargarVehiculos() {
+  const grid = document.getElementById('vehiculosGrid');
   
-  // Configurar filtros
+  if (grid) {
+    grid.innerHTML = `
+      <div class="no-vehiculos">
+        <p style="color: var(--gold);">Cargando vehículos...</p>
+      </div>
+    `;
+  }
+  
+  if (typeof db === 'undefined') {
+    console.error('❌ Firebase no está inicializado');
+    if (grid) {
+      grid.innerHTML = `
+        <div class="no-vehiculos">
+          <p>Error al cargar vehículos. Firebase no disponible.</p>
+        </div>
+      `;
+    }
+    return;
+  }
+  
+  console.log('🔄 Cargando vehículos desde Firebase...');
+  
+  db.collection('vehiculos')
+    .get()
+    .then((snapshot) => {
+      if (snapshot.empty) {
+        console.log('⚠️ No hay vehículos en Firestore');
+        if (grid) {
+          grid.innerHTML = `
+            <div class="no-vehiculos">
+              <p>No hay vehículos disponibles en este momento.</p>
+            </div>
+          `;
+        }
+        todosLosVehiculos = [];
+        return;
+      }
+      
+      const vehiculos = [];
+      snapshot.forEach((doc) => {
+        const data = doc.data();
+        vehiculos.push({
+          id: doc.id,
+          ...data
+        });
+      });
+      
+      todosLosVehiculos = vehiculos;
+      console.log(`✅ ${vehiculos.length} vehículos cargados desde Firebase`);
+      renderVehiculos(vehiculos);
+    })
+    .catch((error) => {
+      console.error('❌ Error al cargar vehículos:', error);
+      if (grid) {
+        grid.innerHTML = `
+          <div class="no-vehiculos">
+            <p>Error al cargar vehículos.</p>
+            <p style="font-size: 14px; margin-top: 10px; color: #666;">
+              ${error.message}
+            </p>
+          </div>
+        `;
+      }
+    });
+}
+
+// ========================================
+// 7. CONFIGURAR FILTROS
+// ========================================
+function configurarFiltros() {
   document.querySelectorAll('.filtro-btn').forEach(btn => {
     btn.addEventListener('click', function() {
-      // Activar/desactivar botones
       document.querySelectorAll('.filtro-btn').forEach(b => b.classList.remove('active'));
       this.classList.add('active');
       
-      const filtro = this.dataset.filter;
-      filtrarVehiculos(filtro);
+      filtroActual = this.dataset.filter;
+      filtrarVehiculos(filtroActual);
     });
   });
+}
+
+// ========================================
+// 8. INICIALIZAR
+// ========================================
+document.addEventListener('DOMContentLoaded', function() {
+  console.log('🚀 Inicializando catálogo...');
+  configurarFiltros();
+  cargarVehiculos();
 });
+
+// Hacer disponible la función globalmente
+window.cargarVehiculos = cargarVehiculos;
