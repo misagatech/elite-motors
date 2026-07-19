@@ -211,6 +211,20 @@ function configurarFiltros() {
     });
   });
 }
+// En catalogo.js
+// Botón "Ir arriba"
+const scrollBtn = document.getElementById('scrollTop');
+window.addEventListener('scroll', () => {
+    if (window.scrollY > 500) {
+        scrollBtn.classList.add('visible');
+    } else {
+        scrollBtn.classList.remove('visible');
+    }
+});
+scrollBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+});
 
 // ========================================
 // 8. INICIALIZAR
