@@ -382,7 +382,7 @@ body {
 .card-imagen {
   position: relative;
   width: 100%;
-  padding-bottom: 95%; /* ← CAMBIADO: más alto para fotos verticales */
+  padding-bottom: 95%;
   overflow: hidden;
   background: #0a0a0a;
   border-radius: 18px 18px 0 0;
@@ -395,8 +395,8 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover; /* Recorta la imagen para llenar el espacio */
-  object-position: center 25%; /* ← NUEVO: centra la imagen un poco más arriba */
+  object-fit: cover;
+  object-position: center 25%;
   display: block;
   transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
@@ -746,6 +746,7 @@ body {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 60px;
+  align-items: start;
 }
 
 .detalle-error {
@@ -767,16 +768,20 @@ body {
   border-radius: 18px;
   overflow: hidden;
   background: #0a0a0a;
-  margin-bottom: 16px;
+  margin: 0 auto 16px auto;
   box-shadow: 0 8px 40px rgba(0, 0, 0, 0.5);
-  aspect-ratio: 4/5; /* ← NUEVO: proporción vertical para fotos de autos */
+  aspect-ratio: 4/5;
   max-height: 700px;
+  max-width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .detalle-gallery-main img {
   width: 100%;
   height: 100%;
-  object-fit: contain; /* ← CAMBIADO: muestra la foto completa */
+  object-fit: contain;
   display: block;
   transition: transform 0.4s ease;
   background: #0a0a0a;
@@ -786,15 +791,36 @@ body {
   transform: scale(1.02);
 }
 
+/* ======================================== */
+/* 8b. MINIATURAS - CON SCROLL              */
+/* ======================================== */
+
 .detalle-gallery-thumbs {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  display: flex;
   gap: 12px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--gold) transparent;
+}
+
+.detalle-gallery-thumbs::-webkit-scrollbar {
+  height: 4px;
+}
+
+.detalle-gallery-thumbs::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.detalle-gallery-thumbs::-webkit-scrollbar-thumb {
+  background: var(--gold);
+  border-radius: 4px;
 }
 
 .detalle-thumb {
-  width: 100%;
-  aspect-ratio: 4/3; /* ← NUEVO: miniaturas horizontales */
+  flex: 0 0 auto;
+  width: 120px;
+  height: 80px;
   object-fit: cover;
   border-radius: 12px;
   cursor: pointer;
@@ -1190,7 +1216,7 @@ body {
   }
 
   .card-imagen {
-    padding-bottom: 85%; /* ← Menos alto en móvil */
+    padding-bottom: 85%;
   }
 
   .card-title {
@@ -1222,6 +1248,7 @@ body {
   .detalle-gallery-main {
     aspect-ratio: 3/4;
     max-height: 500px;
+    margin: 0 auto 16px auto;
   }
   
   .detalle-gallery-main img {
@@ -1229,12 +1256,13 @@ body {
   }
   
   .detalle-gallery-thumbs {
-    grid-template-columns: repeat(4, 1fr);
     gap: 8px;
   }
   
   .detalle-thumb {
-    aspect-ratio: 1/1; /* ← Cuadradas en móvil */
+    flex: 0 0 auto;
+    width: 80px;
+    height: 60px;
   }
   
   .detalle-header h1 {
@@ -1343,7 +1371,7 @@ body {
   }
 
   .card-imagen {
-    padding-bottom: 100%; /* ← Muy vertical en móviles pequeños */
+    padding-bottom: 100%;
   }
 
   /* DETALLE */
@@ -1353,6 +1381,7 @@ body {
   }
   
   .detalle-thumb {
+    width: 60px;
     height: 50px;
   }
   
