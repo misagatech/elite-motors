@@ -294,6 +294,47 @@ document.getElementById('formVehiculo')?.addEventListener('submit', async functi
   }
 });
 // ========================================
+// 8a. ESTABLECER FOTO DE PORTADA
+// ========================================
+async function setPortada(id, index) {
+  try {
+    // Obtener el vehículo
+    const doc = await db.collection('vehiculos').doc(id).get();
+    if (!doc.exists) {
+      alert('❌ Vehículo no encontrado');
+      return;
+    }
+    
+    const v = doc.data();
+    const fotos = v.fotos || [];
+    
+    if (index >= fotos.length || index === 0) {
+      alert('⚠️ Esta foto ya es la portada');
+      return;
+    }
+    
+    // Mover la foto seleccionada al inicio del array
+    const fotoSeleccionada = fotos[index];
+    fotos.splice(index, 1); // Eliminar la foto de su posición
+    fotos.unshift(fotoSeleccionada); // Ponerla al principio
+    
+    // Actualizar en Firestore
+    await db.collection('vehiculos').doc(id).update({
+      fotos: fotos
+    });
+    
+    alert('⭐ Foto de portada actualizada');
+    
+    // Recargar el modal de fotos
+    verFotos(id);
+    cargarVehiculosAdmin();
+    
+  } catch (error) {
+    console.error('Error al establecer portada:', error);
+    alert('❌ Error al actualizar la portada');
+  }
+}
+// ========================================
 // 8. VER FOTOS DE UN VEHÍCULO
 // ========================================
 function verFotos(id) {
@@ -317,19 +358,23 @@ function verFotos(id) {
           <h3>${marca} ${modelo} - <span>Fotos (${fotos.length})</span></h3>
           <div class="modal-fotos-grid">
             ${fotos.map((url, index) => {
-              const nombre = index === 0 ? 'Portada' : `Foto ${index}`;
+              const nombre = index === 0 ? '⭐ Portada' : `Foto ${index}`;
+              const isPortada = index === 0;
               return `
-                <div class="modal-foto-item">
+                <div class="modal-foto-item ${isPortada ? 'foto-portada' : ''}">
                   <img src="${url}" alt="${nombre}">
                   <span class="modal-foto-nombre">${nombre}</span>
-                  <button class="btn-eliminar-foto" onclick="eliminarFoto('${id}', ${index})">🗑️</button>
+                  <div class="modal-foto-acciones">
+                    ${!isPortada ? `<button class="btn-portada" onclick="setPortada('${id}', ${index})">⭐ Portada</button>` : ''}
+                    <button class="btn-eliminar-foto" onclick="eliminarFoto('${id}', ${index})">🗑️</button>
+                  </div>
                 </div>
               `;
             }).join('')}
             ${fotos.length === 0 ? '<p style="color: #888; text-align:center; grid-column: 1/-1;">No hay fotos para este vehículo</p>' : ''}
           </div>
           <div class="modal-fotos-acciones">
-            <button class="btn-gold" onclick="agregarFotos('${id}')">➕ Agregar Fotos</button>
+            <button class="btn-gold" onclick="agregarFotos('${id}')">📸 Subir Fotos</button>
             <button class="btn-gold" onclick="this.closest('.modal-fotos').remove()">Cerrar</button>
           </div>
         </div>
@@ -337,7 +382,6 @@ function verFotos(id) {
       document.body.appendChild(modal);
     });
 }
-
 // ========================================
 // 9. AGREGAR FOTOS A UN VEHÍCULO
 // ========================================
