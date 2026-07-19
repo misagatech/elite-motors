@@ -130,6 +130,7 @@ function filtrarVehiculos(filtro) {
 // ========================================
 function cargarVehiculos() {
   const grid = document.getElementById('vehiculosGrid');
+  const contador = document.getElementById('contadorVehiculos');
   
   if (grid) {
     grid.innerHTML = `
@@ -137,6 +138,10 @@ function cargarVehiculos() {
         <p style="color: var(--gold);">Cargando vehículos...</p>
       </div>
     `;
+  }
+  
+  if (contador) {
+    contador.textContent = '🔄 Cargando vehículos...';
   }
   
   if (typeof db === 'undefined') {
@@ -147,6 +152,9 @@ function cargarVehiculos() {
           <p>Error al cargar vehículos. Firebase no disponible.</p>
         </div>
       `;
+    }
+    if (contador) {
+      contador.textContent = '❌ Error al cargar';
     }
     return;
   }
@@ -165,6 +173,9 @@ function cargarVehiculos() {
             </div>
           `;
         }
+        if (contador) {
+          contador.textContent = '0 vehículos disponibles';
+        }
         todosLosVehiculos = [];
         return;
       }
@@ -179,6 +190,14 @@ function cargarVehiculos() {
       });
       
       todosLosVehiculos = vehiculos;
+      
+      // ✅ ACTUALIZAR CONTADOR
+      if (contador) {
+        const disponibles = vehiculos.filter(v => v.estado !== 'vendido').length;
+        const total = vehiculos.length;
+        contador.innerHTML = `<span>${disponibles}</span> vehículos disponibles de <span>${total}</span> en total`;
+      }
+      
       console.log(`✅ ${vehiculos.length} vehículos cargados desde Firebase`);
       renderVehiculos(vehiculos);
     })
@@ -194,9 +213,11 @@ function cargarVehiculos() {
           </div>
         `;
       }
+      if (contador) {
+        contador.textContent = '❌ Error al cargar vehículos';
+      }
     });
 }
-
 // ========================================
 // 7. CONFIGURAR FILTROS
 // ========================================
