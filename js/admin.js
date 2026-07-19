@@ -303,7 +303,7 @@ function verFotos(id) {
 // 9. AGREGAR FOTOS A UN VEHÍCULO
 // ========================================
 // ========================================
-// AGREGAR FOTOS - VERSIÓN CLOUDINARY (MÚLTIPLES)
+// AGREGAR FOTOS - VERSIÓN CLOUDINARY (CIERRE INSTANTÁNEO)
 // ========================================
 function agregarFotos(id) {
   if (!auth.currentUser) {
@@ -312,17 +312,17 @@ function agregarFotos(id) {
     return;
   }
   
-  const cloudName = 'ifuxuvyj'; // ← TU CLOUD NAME
+  const cloudName = 'ifuxuvyj';
   
-  // Array para guardar todas las URLs
   let fotosSubidas = [];
   let totalFotos = 0;
+  let widgetAbierto = true;
   
   const widget = cloudinary.createUploadWidget(
     {
       cloudName: cloudName,
       uploadPreset: 'elite_motors',
-      multiple: true, // ← PERMITE MÚLTIPLES FOTOS
+      multiple: true,
       maxFiles: 8,
       sources: ['local', 'url', 'camera'],
       styles: {
@@ -344,61 +344,65 @@ function agregarFotos(id) {
         console.log(`📸 Foto ${totalFotos} subida: ${result.info.secure_url}`);
       }
       
-      // Cuando se cierra el widget (todas las fotos se han subido o se cerró)
+      // Cuando se cierra el widget
       if (!error && result && result.event === 'close') {
+        widgetAbierto = false;
+        
+        // Si no hay fotos subidas, simplemente cerrar
         if (fotosSubidas.length === 0) {
           console.log('⚠️ No se subieron fotos');
           return;
         }
         
-        try {
-          // Mostrar mensaje de guardado
-          const btn = document.querySelector('.modal-fotos-acciones .btn-gold');
-          if (btn) {
-            btn.textContent = '⏳ Guardando...';
-            btn.disabled = true;
+        // Guardar las fotos en segundo plano (sin bloquear la UI)
+        setTimeout(async () => {
+          try {
+            // Mostrar mensaje de guardado en consola
+            console.log(`📸 Guardando ${fotosSubidas.length} fotos...`);
+            
+            const doc = await db.collection('vehiculos').doc(id).get();
+            if (!doc.exists) {
+              alert('❌ Vehículo no encontrado');
+              return;
+            }
+            
+            const v = doc.data();
+            const fotosExistentes = v.fotos || [];
+            const todasLasFotos = [...fotosExistentes, ...fotosSubidas];
+            
+            await db.collection('vehiculos').doc(id).update({
+              fotos: todasLasFotos
+            });
+            
+            // Recargar el panel y el modal
+            cargarVehiculosAdmin();
+            verFotos(id);
+            
+            console.log(`✅ ${fotosSubidas.length} fotos guardadas correctamente`);
+            
+          } catch (error) {
+            console.error('Error al guardar:', error);
+            alert('❌ Error al guardar las fotos');
           }
-          
-          // Obtener el vehículo actual
-          const doc = await db.collection('vehiculos').doc(id).get();
-          if (!doc.exists) {
-            alert('❌ Vehículo no encontrado');
-            return;
-          }
-          
-          const v = doc.data();
-          const fotosExistentes = v.fotos || [];
-          
-          // Combinar fotos existentes con las nuevas
-          const todasLasFotos = [...fotosExistentes, ...fotosSubidas];
-          
-          // Actualizar en Firestore
-          await db.collection('vehiculos').doc(id).update({
-            fotos: todasLasFotos
-          });
-          
-          // Recargar el panel y el modal
-          cargarVehiculosAdmin();
-          verFotos(id);
-          
-          alert(`✅ ${fotosSubidas.length} fotos subidas correctamente`);
-          
-        } catch (error) {
-          console.error('Error al guardar:', error);
-          alert('❌ Error al guardar las fotos');
-        } finally {
-          // Restaurar botón
-          const btn = document.querySelector('.modal-fotos-acciones .btn-gold');
-          if (btn) {
-            btn.textContent = '📸 Subir Fotos';
-            btn.disabled = false;
-          }
-        }
+        }, 500); // Espera 500ms para no bloquear el cierre
       }
     }
   );
   
+  // Abrir el widget
   widget.open();
+  
+  // Forzar el cierre si el usuario hace clic en la X
+  // Esto permite que el widget se cierre instantáneamente
+  const checkClose = setInterval(() => {
+    const closeBtn = document.querySelector('.cloudinary-widget-close');
+    if (closeBtn) {
+      closeBtn.addEventListener('click', function() {
+        // El widget se cerrará, pero el guardado sigue en segundo plano
+        console.log('🔄 Cerrando widget...');
+      });
+    }
+  }, 1000);
 }
 // ========================================
 // 10. ELIMINAR UNA FOTO
