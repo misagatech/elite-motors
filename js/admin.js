@@ -175,7 +175,7 @@ function editarVehiculo(id) {
     });
 }
 // ========================================
-// 7. GUARDAR VEHÍCULO
+// 7. GUARDAR VEHÍCULO (CON CLOUDINARY)
 // ========================================
 document.getElementById('formVehiculo')?.addEventListener('submit', async function(e) {
   e.preventDefault();
@@ -201,10 +201,8 @@ document.getElementById('formVehiculo')?.addEventListener('submit', async functi
     descripcion: document.getElementById('descripcion').value
   };
 
-  // Subir imágenes (mínimo 1, máximo 8)
+  // Subir imágenes con Cloudinary
   const files = document.getElementById('fotos').files;
-  
-  // 🔥 CAMBIO AQUÍ: mínimo 1 foto en lugar de 2
   if (files.length > 0 && files.length < 1) {
     alert('Selecciona al menos 1 foto (máximo 8)');
     return;
@@ -215,23 +213,60 @@ document.getElementById('formVehiculo')?.addEventListener('submit', async functi
   }
 
   const fotosUrls = [];
-  for (let i = 0; i < files.length; i++) {
-    const file = files[i];
-    // Crear nombre automático: portada, 1, 2, 3...
-    let nombreFoto;
-    if (i === 0) {
-      nombreFoto = `${nombreBase}-portada`;
-    } else {
-      nombreFoto = `${nombreBase}-${i}`;
+  
+  if (files.length > 0) {
+    // Mostrar mensaje de subida
+    const btn = document.querySelector('.modal-content .btn-gold');
+    if (btn) {
+      btn.textContent = '⏳ Subiendo fotos...';
+      btn.disabled = true;
     }
-    // Obtener extensión del archivo original
-    const extension = file.name.split('.').pop();
-    const nombreCompleto = `${nombreFoto}.${extension}`;
     
-    const storageRef = storage.ref(`vehiculos/${Date.now()}_${nombreCompleto}`);
-    await storageRef.put(file);
-    const url = await storageRef.getDownloadURL();
-    fotosUrls.push(url);
+    // Subir cada foto a Cloudinary
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      
+      // Crear FormData para Cloudinary
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('upload_preset', 'elite_motors');
+      formData.append('folder', 'elite-motors');
+      
+      try {
+        // Subir a Cloudinary usando fetch
+        const response = await fetch(
+          `https://api.cloudinary.com/v1_1/ifuxuvyj/image/upload`,
+          {
+            method: 'POST',
+            body: formData
+          }
+        );
+        
+        if (!response.ok) {
+          throw new Error('Error al subir a Cloudinary');
+        }
+        
+        const result = await response.json();
+        fotosUrls.push(result.secure_url);
+        
+        console.log(`📸 Foto ${i + 1}/${files.length} subida`);
+        
+      } catch (error) {
+        console.error('Error al subir foto:', error);
+        alert('❌ Error al subir las fotos. Intenta de nuevo.');
+        if (btn) {
+          btn.textContent = 'Guardar';
+          btn.disabled = false;
+        }
+        return;
+      }
+    }
+    
+    // Restaurar botón
+    const btn = document.querySelector('.modal-content .btn-gold');
+    if (btn) {
+      btn.textContent = '⏳ Guardando...';
+    }
   }
 
   if (fotosUrls.length > 0) {
@@ -251,9 +286,15 @@ document.getElementById('formVehiculo')?.addEventListener('submit', async functi
     cargarVehiculosAdmin();
   } catch (error) {
     alert('❌ Error al guardar: ' + error.message);
+  } finally {
+    // Restaurar botón
+    const btn = document.querySelector('.modal-content .btn-gold');
+    if (btn) {
+      btn.textContent = 'Guardar';
+      btn.disabled = false;
+    }
   }
 });
-
 // ========================================
 // 8. VER FOTOS DE UN VEHÍCULO
 // ========================================
