@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elite Motors - Detalle del Vehículo</title>
+    
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+
+<body>
+    <!-- HEADER -->
+    <header class="header" id="header">
+        <div class="header-container">
+            <a href="index.html" class="header-logo">
+                <img src="img/logo.png" alt="Elite Motors">
+            </a>
+            <nav class="header-nav" id="headerNav">
+                <a href="index.html#inicio">Inicio</a>
+                <a href="index.html#inventario">Inventario</a>
+                <a href="index.html#contacto">Contacto</a>
+            </nav>
+            <div class="header-hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </header>
+    <div class="header-overlay" id="headerOverlay"></div>
+
+    <!-- DETALLE DEL VEHÍCULO -->
+    <section class="detalle-vehiculo" id="detalle">
+        <div class="container">
+            <div class="detalle-loading" id="detalleLoading">
+                <p>Cargando información del vehículo...</p>
+            </div>
+            <div class="detalle-content" id="detalleContent" style="display: none;">
+                <!-- Galería -->
+                <div class="detalle-gallery">
+                    <div class="detalle-gallery-main">
+                        <img id="detalleImagenPrincipal" src="" alt="Vehículo">
+                    </div>
+                    <div class="detalle-gallery-thumbs" id="detalleThumbs">
+                        <!-- Miniaturas -->
+                    </div>
+                </div>
+
+                <!-- Información -->
+                <div class="detalle-info">
+                    <div class="detalle-header">
+                        <h1 id="detalleTitulo">BMW 120i</h1>
+                        <span class="detalle-estado" id="detalleEstado">Disponible</span>
+                    </div>
+
+                    <div class="detalle-precio" id="detallePrecio">$65.000.000</div>
+
+                    <div class="detalle-especificaciones">
+                        <div class="detalle-spec">
+                            <i class="fas fa-tachometer-alt"></i>
+                            <span id="detalleKilometraje">87.295 km</span>
+                        </div>
+                        <div class="detalle-spec">
+                            <i class="fas fa-cog"></i>
+                            <span id="detalleTransmision">Automático</span>
+                        </div>
+                        <div class="detalle-spec">
+                            <i class="fas fa-calendar-alt"></i>
+                            <span id="detalleAño">2022</span>
+                        </div>
+                        <div class="detalle-spec">
+                            <i class="fas fa-gas-pump"></i>
+                            <span id="detalleCombustible">Gasolina</span>
+                        </div>
+                    </div>
+
+                    <div class="detalle-descripcion">
+                        <h3>Descripción</h3>
+                        <p id="detalleDescripcion">Vehículo en excelentes condiciones, mantenimiento al día.</p>
+                    </div>
+
+                    <div class="detalle-acciones">
+                        <a href="#" id="detalleWhatsApp" class="btn-whatsapp" target="_blank">
+                            <i class="fab fa-whatsapp"></i>
+                            SOLICITAR INFORMACIÓN
+                        </a>
+                        <a href="index.html#inventario" class="btn-gold" style="text-align:center;">
+                            ← VOLVER AL CATÁLOGO
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="detalle-error" id="detalleError" style="display: none;">
+                <p>Vehículo no encontrado.</p>
+                <a href="index.html#inventario" class="btn-gold" style="margin-top: 20px; display:inline-block;">
+                    ← VOLVER AL CATÁLOGO
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer" id="contacto">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <div class="footer-logo">
+                        <img src="img/logo.png" alt="Elite Motors" class="footer-logo-img">
+                        <span class="footer-logo-text">ELITE<span>MOTORS</span></span>
+                    </div>
+                    <p class="footer-description">
+                        Vehículos seleccionados con calidad,<br>
+                        respaldo y el mejor precio del mercado.
+                    </p>
+                    <div class="footer-social">
+                        <a href="https://www.facebook.com/elite.motors.bogota/" target="_blank" class="footer-social-link">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="https://www.instagram.com/elite.motors.co/" target="_blank" class="footer-social-link">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="https://www.tiktok.com/@elite.motors.co/" target="_blank" class="footer-social-link">
+                            <i class="fab fa-tiktok"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h4 class="footer-title">HORARIO</h4>
+                    <ul class="footer-list">
+                        <li><i class="fas fa-clock"></i> Lunes a Sábado</li>
+                        <li><i class="fas fa-clock"></i> 9:00 AM - 6:00 PM</li>
+                    </ul>
+                    <h4 class="footer-title">CONTACTO</h4>
+                    <ul class="footer-list">
+                        <li><i class="fas fa-phone"></i> <a href="tel:+573227578520">322 7578520</a></li>
+                        <li><i class="fas fa-map-marker-alt"></i> Calle 127 #71B-84</li>
+                        <li><i class="fas fa-map-pin"></i> Bogotá, Colombia</li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4 class="footer-title">ENLACES</h4>
+                    <ul class="footer-list">
+                        <li><a href="index.html#inicio">Inicio</a></li>
+                        <li><a href="index.html#inventario">Inventario</a></li>
+                        <li><a href="index.html#contacto">Contacto</a></li>
+                    </ul>
+                    <div class="footer-google">
+                        <a href="https://www.google.com/maps/place/Elite+Motors/@4.7102487,-74.0787303,17z/" target="_blank" class="footer-google-link">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <span>5.0 (6 reseñas)</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p class="footer-copy">© 2026 Elite Motors. Todos los derechos reservados.</p>
+                <p class="footer-credits">Realizado por <a href="https://www.misagatech.com" target="_blank">Misagatech</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- SCRIPTS -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    
+    <script src="js/firebase.js"></script>
+    <script src="js/vehiculo.js"></script>
+</body>
+
+</html>
