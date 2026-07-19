@@ -1,5 +1,5 @@
 /* ======================================== */
-/* PANEL ADMINISTRADOR                       */
+/* PANEL ADMINISTRADOR - VERSIÓN PREMIUM    */
 /* ======================================== */
 
 .admin-panel {
@@ -21,69 +21,135 @@
   font-size: 32px;
   color: white;
   font-weight: 700;
+  letter-spacing: -1px;
+}
+
+.admin-header h1 span {
+  color: var(--gold);
 }
 
 .admin-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 20px;
+  gap: 24px;
 }
+
+/* ======================================== */
+/* ADMIN CARDS - MEJORADAS                  */
+/* ======================================== */
 
 .admin-card {
   background: var(--black-secondary);
-  border-radius: 12px;
+  border-radius: 16px;
   border: 1px solid #1a1a1a;
   overflow: hidden;
   transition: all 0.3s ease;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
 }
 
 .admin-card:hover {
   border-color: var(--gold);
+  transform: translateY(-4px);
+  box-shadow: 0 8px 30px rgba(212, 175, 55, 0.1);
 }
 
 .admin-card-imagen {
-  height: 160px;
+  height: 180px;
   overflow: hidden;
-  background: #1a1a1a;
+  background: #0a0a0a;
+  position: relative;
 }
 
 .admin-card-imagen img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.admin-card:hover .admin-card-imagen img {
+  transform: scale(1.05);
+}
+
+/* Badge de estado en admin */
+.admin-card-estado {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  padding: 4px 14px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  backdrop-filter: blur(8px);
+}
+
+.admin-card-estado.disponible {
+  background: rgba(46, 213, 115, 0.9);
+  color: #fff;
+}
+
+.admin-card-estado.vendido {
+  background: rgba(255, 71, 87, 0.9);
+  color: #fff;
 }
 
 .admin-card-body {
-  padding: 16px;
+  padding: 18px 20px 20px;
 }
 
 .admin-card-body h3 {
   color: white;
   font-size: 18px;
-  margin-bottom: 4px;
+  font-weight: 700;
+  margin-bottom: 2px;
+  letter-spacing: -0.3px;
+}
+
+.admin-card-body .version {
+  color: #888;
+  font-size: 13px;
+  font-weight: 400;
+  margin-bottom: 8px;
 }
 
 .admin-card-body .precio {
   color: var(--gold);
-  font-size: 20px;
+  font-size: 22px;
   font-weight: 700;
+  font-family: 'Georgia', serif;
+}
+
+.admin-card-body .detalles-admin {
+  display: flex;
+  gap: 16px;
+  margin: 10px 0 14px;
+  color: #888;
+  font-size: 13px;
+}
+
+.admin-card-body .detalles-admin i {
+  color: var(--gold);
+  width: 16px;
 }
 
 .admin-card-acciones {
   display: flex;
   gap: 8px;
-  margin-top: 12px;
+  margin-top: 4px;
   flex-wrap: wrap;
 }
 
 .admin-card-acciones button {
-  padding: 6px 14px;
+  padding: 6px 16px;
   border: none;
-  border-radius: 6px;
+  border-radius: 8px;
   cursor: pointer;
   font-size: 12px;
   font-weight: 600;
   transition: all 0.3s ease;
+  letter-spacing: 0.5px;
 }
 
 .btn-editar {
@@ -93,6 +159,7 @@
 
 .btn-editar:hover {
   background: var(--gold-light);
+  transform: translateY(-2px);
 }
 
 .btn-vendido {
@@ -102,6 +169,7 @@
 
 .btn-vendido:hover {
   background: #e55a2b;
+  transform: translateY(-2px);
 }
 
 .btn-eliminar {
@@ -111,14 +179,19 @@
 
 .btn-eliminar:hover {
   background: #e03a4a;
+  transform: translateY(-2px);
 }
 
-/* MODAL */
+/* ======================================== */
+/* MODAL - MEJORADO                        */
+/* ======================================== */
+
 .modal {
   display: none;
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.8);
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(4px);
   z-index: 2000;
   overflow-y: auto;
   padding: 40px 20px;
@@ -132,12 +205,25 @@
 
 .modal-content {
   background: var(--black-secondary);
-  border-radius: 16px;
-  padding: 40px;
-  max-width: 600px;
+  border-radius: 20px;
+  padding: 40px 44px;
+  max-width: 620px;
   width: 100%;
-  border: 1px solid #1a1a1a;
+  border: 1px solid rgba(212, 175, 55, 0.15);
   position: relative;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+  animation: modalFadeIn 0.3s ease;
+}
+
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 
 .modal-close {
@@ -148,6 +234,8 @@
   color: #888;
   cursor: pointer;
   transition: color 0.3s ease;
+  background: none;
+  border: none;
 }
 
 .modal-close:hover {
@@ -156,8 +244,14 @@
 
 .modal-content h2 {
   color: white;
-  font-size: 24px;
+  font-size: 26px;
+  font-weight: 700;
   margin-bottom: 24px;
+  letter-spacing: -0.5px;
+}
+
+.modal-content h2 span {
+  color: var(--gold);
 }
 
 .form-group {
@@ -167,24 +261,24 @@
 .form-group label {
   display: block;
   color: #aaa;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 600;
   margin-bottom: 4px;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.8px;
 }
 
 .form-group input,
 .form-group select,
 .form-group textarea {
   width: 100%;
-  padding: 10px 14px;
+  padding: 11px 16px;
   background: #1a1a1a;
   border: 1px solid #333;
-  border-radius: 8px;
+  border-radius: 10px;
   color: white;
   font-size: 14px;
-  transition: border-color 0.3s ease;
+  transition: all 0.3s ease;
 }
 
 .form-group input:focus,
@@ -192,16 +286,30 @@
 .form-group textarea:focus {
   outline: none;
   border-color: var(--gold);
+  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
+}
+
+.form-group input:hover,
+.form-group select:hover,
+.form-group textarea:hover {
+  border-color: #555;
 }
 
 .form-group textarea {
   resize: vertical;
   min-height: 80px;
+  font-family: 'Inter', sans-serif;
 }
 
 .form-group input[type="file"] {
-  padding: 8px;
+  padding: 12px;
   background: transparent;
+  border: 2px dashed #333;
+  cursor: pointer;
+}
+
+.form-group input[type="file"]:hover {
+  border-color: var(--gold);
 }
 
 .form-group small {
@@ -211,7 +319,18 @@
   margin-top: 4px;
 }
 
-/* RESPONSIVE */
+.modal-content .btn-gold {
+  width: 100%;
+  justify-content: center;
+  padding: 14px;
+  font-size: 16px;
+  margin-top: 8px;
+}
+
+/* ======================================== */
+/* RESPONSIVE ADMIN                         */
+/* ======================================== */
+
 @media (max-width: 768px) {
   .admin-panel {
     padding: 120px 0 40px 0;
@@ -226,7 +345,52 @@
     font-size: 24px;
   }
 
+  .admin-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .admin-card-imagen {
+    height: 140px;
+  }
+
+  .admin-card-body {
+    padding: 14px 16px 16px;
+  }
+
+  .admin-card-body h3 {
+    font-size: 16px;
+  }
+
+  .admin-card-body .precio {
+    font-size: 18px;
+  }
+
   .modal-content {
-    padding: 24px;
+    padding: 28px 24px;
+    margin: 10px;
+  }
+
+  .modal-content h2 {
+    font-size: 22px;
+  }
+}
+
+@media (max-width: 480px) {
+  .admin-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-card-imagen {
+    height: 200px;
+  }
+
+  .admin-card-acciones {
+    flex-direction: column;
+  }
+
+  .admin-card-acciones button {
+    width: 100%;
+    padding: 10px;
   }
 }
