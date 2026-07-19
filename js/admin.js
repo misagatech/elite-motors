@@ -79,23 +79,33 @@ function cargarVehiculosAdmin() {
       snapshot.forEach(doc => {
         const v = doc.data();
         const id = doc.id;
-        const img = v.fotos && v.fotos.length > 0 ? v.fotos[0] : 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="400" height="300"%3E%3Crect width="400" height="300" fill="%231a1a1a"/%3E%3Ctext x="200" y="150" font-family="Arial" font-size="24" fill="%23D4AF37" text-anchor="middle" dominant-baseline="middle"%3EElite Motors%3C/text%3E%3C/svg%3E';
+        // Usar la PRIMERA foto si existe, sino placeholder SVG
+        const img = v.fotos && v.fotos.length > 0 
+          ? v.fotos[0] 
+          : 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="400" height="300"%3E%3Crect width="400" height="300" fill="%231a1a1a"/%3E%3Ctext x="200" y="150" font-family="Arial" font-size="24" fill="%23D4AF37" text-anchor="middle" dominant-baseline="middle"%3EElite Motors%3C/text%3E%3C/svg%3E';
 
         html += `
           <div class="admin-card" data-id="${id}">
             <div class="admin-card-imagen">
-              <img src="${img}" alt="${v.marca} ${v.modelo}">
+              <img src="${img}" alt="${v.marca} ${v.modelo}" loading="lazy">
+              <span class="admin-card-estado ${v.estado === 'vendido' ? 'vendido' : 'disponible'}">
+                ${v.estado === 'vendido' ? 'VENDIDO' : 'DISPONIBLE'}
+              </span>
             </div>
             <div class="admin-card-body">
               <h3>${v.marca} ${v.modelo}</h3>
+              <div class="version">${v.version || ''}</div>
               <div class="precio">$${Number(v.precio).toLocaleString('es-CO')}</div>
-              <div style="color: #888; font-size: 13px;">${v.estado === 'vendido' ? '🔴 Vendido' : '🟢 Disponible'}</div>
+              <div class="detalles-admin">
+                <span><i class="fas fa-tachometer-alt"></i> ${Number(v.kilometraje).toLocaleString()} km</span>
+                <span><i class="fas fa-cog"></i> ${v.transmision || 'Automático'}</span>
+              </div>
               <div class="admin-card-acciones">
-                <button class="btn-editar" onclick="editarVehiculo('${id}')">Editar</button>
+                <button class="btn-editar" onclick="editarVehiculo('${id}')">✏️ Editar</button>
                 <button class="btn-vendido" onclick="toggleEstado('${id}')">
-                  ${v.estado === 'vendido' ? 'Disponible' : 'Vendido'}
+                  ${v.estado === 'vendido' ? '📦 Disponible' : '🚫 Vendido'}
                 </button>
-                <button class="btn-eliminar" onclick="eliminarVehiculo('${id}')">Eliminar</button>
+                <button class="btn-eliminar" onclick="eliminarVehiculo('${id}')">🗑️ Eliminar</button>
               </div>
             </div>
           </div>
@@ -109,7 +119,6 @@ function cargarVehiculosAdmin() {
       grid.innerHTML = '<p style="color: #ff4757; text-align: center;">Error al cargar vehículos</p>';
     });
 }
-
 // ========================================
 // 5. AGREGAR/EDITAR VEHÍCULO
 // ========================================
