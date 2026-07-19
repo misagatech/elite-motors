@@ -35,7 +35,7 @@
 }
 
 /* ======================================== */
-/* ADMIN CARDS - MEJORADAS                  */
+/* ADMIN CARDS - VERSIÓN PREMIUM            */
 /* ======================================== */
 
 .admin-card {
@@ -56,7 +56,7 @@
 .admin-card-imagen {
   position: relative;
   width: 100%;
-  padding-bottom: 75%; /* ← MISMA PROPORCIÓN que el catálogo (4:3) */
+  padding-bottom: 75%; /* MISMA PROPORCIÓN que el catálogo (4:3) */
   overflow: hidden;
   background: #0a0a0a;
   flex-shrink: 0;
@@ -72,6 +72,7 @@
   object-position: center 25%;
   transition: transform 0.4s ease;
 }
+
 .admin-card:hover .admin-card-imagen img {
   transform: scale(1.05);
 }
@@ -88,6 +89,7 @@
   text-transform: uppercase;
   letter-spacing: 1px;
   backdrop-filter: blur(8px);
+  z-index: 2;
 }
 
 .admin-card-estado.disponible {
@@ -188,7 +190,7 @@
 }
 
 /* ======================================== */
-/* MODAL - MEJORADO                        */
+/* MODAL - VERSIÓN MEJORADA Y CORREGIDA    */
 /* ======================================== */
 
 .modal {
@@ -211,13 +213,29 @@
 .modal-content {
   background: var(--black-secondary);
   border-radius: 20px;
-  padding: 40px 44px;
-  max-width: 620px;
+  padding: 32px 36px 40px;
+  max-width: 560px;
   width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
   border: 1px solid rgba(212, 175, 55, 0.15);
   position: relative;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
   animation: modalFadeIn 0.3s ease;
+}
+
+/* Scroll personalizado para el modal */
+.modal-content::-webkit-scrollbar {
+  width: 4px;
+}
+
+.modal-content::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.modal-content::-webkit-scrollbar-thumb {
+  background: var(--gold);
+  border-radius: 4px;
 }
 
 @keyframes modalFadeIn {
@@ -241,6 +259,7 @@
   transition: color 0.3s ease;
   background: none;
   border: none;
+  z-index: 5;
 }
 
 .modal-close:hover {
@@ -249,10 +268,11 @@
 
 .modal-content h2 {
   color: white;
-  font-size: 26px;
+  font-size: 24px;
   font-weight: 700;
-  margin-bottom: 24px;
+  margin-bottom: 20px;
   letter-spacing: -0.5px;
+  padding-right: 30px;
 }
 
 .modal-content h2 span {
@@ -260,15 +280,15 @@
 }
 
 .form-group {
-  margin-bottom: 16px;
+  margin-bottom: 14px;
 }
 
 .form-group label {
   display: block;
   color: #aaa;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 600;
-  margin-bottom: 4px;
+  margin-bottom: 3px;
   text-transform: uppercase;
   letter-spacing: 0.8px;
 }
@@ -277,10 +297,10 @@
 .form-group select,
 .form-group textarea {
   width: 100%;
-  padding: 11px 16px;
+  padding: 10px 14px;
   background: #1a1a1a;
   border: 1px solid #333;
-  border-radius: 10px;
+  border-radius: 8px;
   color: white;
   font-size: 14px;
   transition: all 0.3s ease;
@@ -302,12 +322,12 @@
 
 .form-group textarea {
   resize: vertical;
-  min-height: 80px;
+  min-height: 60px;
   font-family: 'Inter', sans-serif;
 }
 
 .form-group input[type="file"] {
-  padding: 12px;
+  padding: 10px;
   background: transparent;
   border: 2px dashed #333;
   cursor: pointer;
@@ -320,22 +340,23 @@
 .form-group small {
   display: block;
   color: #666;
-  font-size: 12px;
-  margin-top: 4px;
+  font-size: 11px;
+  margin-top: 3px;
 }
 
 .modal-content .btn-gold {
   width: 100%;
   justify-content: center;
-  padding: 14px;
-  font-size: 16px;
-  margin-top: 8px;
+  padding: 12px;
+  font-size: 15px;
+  margin-top: 6px;
 }
 
 /* ======================================== */
 /* RESPONSIVE ADMIN                         */
 /* ======================================== */
 
+/* ---- TABLETS ---- */
 @media (max-width: 768px) {
   .admin-panel {
     padding: 120px 0 40px 0;
@@ -355,10 +376,6 @@
     gap: 16px;
   }
 
-  .admin-card-imagen {
-    height: 140px;
-  }
-
   .admin-card-body {
     padding: 14px 16px 16px;
   }
@@ -371,23 +388,51 @@
     font-size: 18px;
   }
 
+  .admin-card-body .detalles-admin {
+    font-size: 12px;
+    gap: 12px;
+  }
+
+  /* MODAL RESPONSIVE */
   .modal-content {
-    padding: 28px 24px;
+    padding: 24px 20px 30px;
+    max-width: 100%;
     margin: 10px;
+    border-radius: 16px;
+    max-height: 85vh;
   }
 
   .modal-content h2 {
-    font-size: 22px;
+    font-size: 20px;
+    margin-bottom: 16px;
+  }
+
+  .form-group {
+    margin-bottom: 12px;
+  }
+
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+
+  .modal-content .btn-gold {
+    padding: 10px;
+    font-size: 14px;
   }
 }
 
+/* ---- MÓVILES PEQUEÑOS ---- */
 @media (max-width: 480px) {
   .admin-grid {
     grid-template-columns: 1fr;
+    gap: 16px;
   }
 
   .admin-card-imagen {
-    height: 200px;
+    padding-bottom: 65%;
   }
 
   .admin-card-acciones {
@@ -397,5 +442,51 @@
   .admin-card-acciones button {
     width: 100%;
     padding: 10px;
+    justify-content: center;
+  }
+
+  .admin-card-body .detalles-admin {
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  /* MODAL MÓVIL MUY PEQUEÑO */
+  .modal-content {
+    padding: 18px 16px 24px;
+    border-radius: 14px;
+    max-height: 80vh;
+  }
+
+  .modal-content h2 {
+    font-size: 18px;
+    margin-bottom: 14px;
+    padding-right: 24px;
+  }
+
+  .form-group {
+    margin-bottom: 10px;
+  }
+
+  .form-group label {
+    font-size: 10px;
+  }
+
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    padding: 7px 10px;
+    font-size: 12px;
+    border-radius: 6px;
+  }
+
+  .modal-close {
+    top: 12px;
+    right: 14px;
+    font-size: 24px;
+  }
+
+  .modal-content .btn-gold {
+    padding: 10px;
+    font-size: 13px;
   }
 }
