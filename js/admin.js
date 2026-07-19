@@ -301,65 +301,70 @@ function verFotos(id) {
 // ========================================
 // 9. AGREGAR FOTOS A UN VEHÍCULO
 // ========================================
+// ========================================
+// AGREGAR FOTOS - VERSIÓN CLOUDINARY
+// ========================================
 function agregarFotos(id) {
-  // Crear input file oculto
-  const input = document.createElement('input');
-  input.type = 'file';
-  input.multiple = true;
-  input.accept = 'image/*';
-  input.style.display = 'none';
-  document.body.appendChild(input);
+  if (!auth.currentUser) {
+    alert('❌ Debes iniciar sesión');
+    window.location.href = 'login.html';
+    return;
+  }
   
-  input.addEventListener('change', async function(e) {
-    const files = e.target.files;
-    if (files.length === 0) return;
-    
-    try {
-      const doc = await db.collection('vehiculos').doc(id).get();
-      const v = doc.data();
-      const fotosExistentes = v.fotos || [];
-      const marca = v.marca || 'vehiculo';
-      const modelo = v.modelo || '';
-      const nombreBase = `${marca.toLowerCase()}-${modelo.toLowerCase()}`.replace(/\s+/g, '-');
-      
-      // Subir nuevas fotos con nombres automáticos
-      const nuevasFotos = [];
-      for (let i = 0; i < files.length; i++) {
-        const file = files[i];
-        // El índice comienza desde donde quedaron las fotos existentes
-        const index = fotosExistentes.length + i;
-        const nombreFoto = index === 0 ? `${nombreBase}-portada` : `${nombreBase}-${index}`;
-        const extension = file.name.split('.').pop();
-        const nombreCompleto = `${nombreFoto}.${extension}`;
-        
-        const storageRef = storage.ref(`vehiculos/${Date.now()}_${nombreCompleto}`);
-        await storageRef.put(file);
-        const url = await storageRef.getDownloadURL();
-        nuevasFotos.push(url);
+  // 🔥 TUS CREDENCIALES DE CLOUDINARY 🔥
+  const cloudName = 'ifuxuvyj'; // ← TU CLOUD NAME
+  
+  const widget = cloudinary.createUploadWidget(
+    {
+      cloudName: cloudName,
+      uploadPreset: 'elite_motors', // ← EL PRESET QUE CREASTE
+      multiple: true,
+      maxFiles: 8,
+      sources: ['local', 'url', 'camera'],
+      styles: {
+        palette: {
+          window: '#0B0B0B',
+          sourceBg: '#141414',
+          border: '#D4AF37',
+          text: '#FFFFFF',
+          action: '#D4AF37',
+          inactive: '#666'
+        }
       }
-      
-      // Combinar y actualizar
-      const todasLasFotos = [...fotosExistentes, ...nuevasFotos];
-      await db.collection('vehiculos').doc(id).update({
-        fotos: todasLasFotos
-      });
-      
-      alert(`✅ ${nuevasFotos.length} fotos agregadas correctamente`);
-      input.remove();
-      cargarVehiculosAdmin();
-      // Recargar modal de fotos
-      const modal = document.querySelector('.modal-fotos');
-      if (modal) {
-        verFotos(id);
+    },
+    async (error, result) => {
+      if (!error && result && result.event === 'success') {
+        try {
+          const url = result.info.secure_url;
+          
+          const doc = await db.collection('vehiculos').doc(id).get();
+          if (!doc.exists) {
+            alert('❌ Vehículo no encontrado');
+            return;
+          }
+          
+          const v = doc.data();
+          const fotosExistentes = v.fotos || [];
+          const nuevasFotos = [...fotosExistentes, url];
+          
+          await db.collection('vehiculos').doc(id).update({
+            fotos: nuevasFotos
+          });
+          
+          // Recargar el panel y el modal de fotos
+          cargarVehiculosAdmin();
+          verFotos(id);
+          
+        } catch (error) {
+          console.error('Error:', error);
+          alert('❌ Error al guardar la foto');
+        }
       }
-    } catch (error) {
-      alert('❌ Error al subir fotos: ' + error.message);
     }
-  });
+  );
   
-  input.click();
+  widget.open();
 }
-
 // ========================================
 // 10. ELIMINAR UNA FOTO
 // ========================================
