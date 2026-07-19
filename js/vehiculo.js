@@ -150,11 +150,14 @@ function mostrarDetalle(vehiculo, id) {
     imgPrincipal.src = imagenes.length > 0 ? imagenes[0] : 'img/placeholder-car.jpg';
   }
   
-  // Miniaturas
+  // ========================================
+  // 5. MINIATURAS - SOLO LAS QUE EXISTEN
+  // ========================================
   const thumbsContainer = document.getElementById('detalleThumbs');
   if (thumbsContainer) {
     thumbsContainer.innerHTML = '';
     
+    // Mostrar SOLO las imágenes que existen
     imagenes.forEach((img, index) => {
       const thumb = document.createElement('img');
       thumb.src = img;
