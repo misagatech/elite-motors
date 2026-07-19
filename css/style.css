@@ -137,7 +137,7 @@ body {
 }
 
 /* ======================================== */
-/* 3. HERO - VERSIÓN MEJORADA              */
+/* 3. HERO                                 */
 /* ======================================== */
 
 .hero {
@@ -173,11 +173,10 @@ body {
   z-index: 2;
   max-width: 700px;
   width: 100%;
-  /* ELIMINADO margin-top para que sea más limpio */
 }
 
 .hero-logo {
-  width: clamp(180px, 22vw, 250px); /* REDUCIDO para que sea más discreto */
+  width: clamp(180px, 22vw, 250px);
   margin-bottom: clamp(16px, 2.5vw, 30px);
   object-fit: contain;
 }
@@ -198,7 +197,7 @@ body {
   margin-bottom: clamp(16px, 2.5vw, 30px);
   color: white;
   letter-spacing: -1px;
-  margin-top: 20px; /* Pequeño espacio adicional */
+  margin-top: 20px;
 }
 
 .linea-dorada {
@@ -243,7 +242,7 @@ body {
 /* ======================================== */
 
 .filtros-section {
-  padding: 40px 0 30px 0; /* REDUCIDO porque el Hero ya tiene más espacio */
+  padding: 40px 0 30px 0;
   background: var(--black);
 }
 
@@ -336,7 +335,7 @@ body {
 }
 
 /* ======================================== */
-/* 6. TARJETAS DE VEHÍCULOS                 */
+/* 6. TARJETAS DE VEHÍCULOS - MEJORADAS     */
 /* ======================================== */
 
 .vehiculo-card {
@@ -345,6 +344,8 @@ body {
   overflow: hidden;
   transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   border: 1px solid #1a1a1a;
+  display: flex;
+  flex-direction: column;
 }
 
 .vehiculo-card:hover {
@@ -355,15 +356,21 @@ body {
 
 .card-imagen {
   position: relative;
-  height: 220px;
+  width: 100%;
+  padding-bottom: 75%; /* Proporción 4:3 */
   overflow: hidden;
   background: #1a1a1a;
+  flex-shrink: 0;
 }
 
 .card-imagen img {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: cover; /* Recorta la imagen para llenar el espacio */
+  object-position: center;
   transition: transform 0.6s ease;
 }
 
@@ -382,6 +389,7 @@ body {
   text-transform: uppercase;
   letter-spacing: 1px;
   backdrop-filter: blur(10px);
+  z-index: 2;
 }
 
 .estado-disponible {
@@ -396,6 +404,9 @@ body {
 
 .card-body {
   padding: 24px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 .card-title {
@@ -418,6 +429,7 @@ body {
   margin-bottom: 20px;
   padding-bottom: 20px;
   border-bottom: 1px solid #1a1a1a;
+  flex-wrap: wrap;
 }
 
 .card-detalle-item {
@@ -444,6 +456,7 @@ body {
   transition: all 0.3s ease;
   text-transform: uppercase;
   letter-spacing: 1px;
+  margin-top: auto;
 }
 
 .card-btn:hover {
@@ -652,6 +665,197 @@ body {
 }
 
 /* ======================================== */
+/* 9. DETALLE DEL VEHÍCULO                  */
+/* ======================================== */
+
+.detalle-vehiculo {
+  padding: 160px 0 80px 0;
+  background: var(--black);
+  min-height: 100vh;
+}
+
+.detalle-loading {
+  text-align: center;
+  padding: 80px 20px;
+  color: var(--gold);
+  font-size: 18px;
+}
+
+.detalle-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+}
+
+.detalle-error {
+  text-align: center;
+  padding: 80px 20px;
+}
+
+.detalle-error p {
+  font-size: 24px;
+  color: #888;
+  margin-bottom: 20px;
+}
+
+/* Galería */
+.detalle-gallery-main {
+  border-radius: 16px;
+  overflow: hidden;
+  background: #1a1a1a;
+  margin-bottom: 16px;
+}
+
+.detalle-gallery-main img {
+  width: 100%;
+  height: 400px;
+  object-fit: cover;
+}
+
+.detalle-gallery-thumbs {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+
+.detalle-thumb {
+  width: 100%;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 10px;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: all 0.3s ease;
+}
+
+.detalle-thumb:hover {
+  border-color: var(--gold);
+}
+
+.detalle-thumb.active {
+  border-color: var(--gold);
+}
+
+/* Información */
+.detalle-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.detalle-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.detalle-header h1 {
+  font-size: 36px;
+  font-weight: 700;
+  color: white;
+}
+
+.detalle-estado {
+  padding: 6px 20px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.detalle-estado.estado-disponible {
+  background: rgba(46, 213, 115, 0.9);
+  color: #fff;
+}
+
+.detalle-estado.estado-vendido {
+  background: rgba(255, 71, 87, 0.9);
+  color: #fff;
+}
+
+.detalle-precio {
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--gold);
+  margin-bottom: 24px;
+}
+
+.detalle-especificaciones {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 30px;
+  padding: 20px;
+  background: var(--black-secondary);
+  border-radius: 12px;
+  border: 1px solid #1a1a1a;
+}
+
+.detalle-spec {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #ccc;
+  font-size: 15px;
+}
+
+.detalle-spec i {
+  color: var(--gold);
+  width: 20px;
+}
+
+.detalle-descripcion {
+  margin-bottom: 30px;
+}
+
+.detalle-descripcion h3 {
+  color: white;
+  font-size: 18px;
+  margin-bottom: 12px;
+}
+
+.detalle-descripcion p {
+  color: #aaa;
+  font-size: 16px;
+  line-height: 1.7;
+}
+
+.detalle-acciones {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: auto;
+}
+
+.btn-whatsapp {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 18px 38px;
+  background: #25D366;
+  color: white;
+  text-decoration: none;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 16px;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.btn-whatsapp:hover {
+  background: #20b85a;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(37, 211, 102, 0.3);
+}
+
+.btn-whatsapp i {
+  font-size: 24px;
+}
+
+/* ======================================== */
 /* 8. RESPONSIVE - MEDIA QUERIES           */
 /* ======================================== */
 
@@ -675,6 +879,10 @@ body {
 
   .filtros-section {
     padding: 30px 0 25px 0;
+  }
+
+  .detalle-content {
+    gap: 40px;
   }
 }
 
@@ -794,10 +1002,14 @@ body {
     font-size: 12px;
   }
 
-  /* CATÁLOGO */
+  /* CATÁLOGO - MEJORADO PARA MÓVIL */
   .catalogo-grid {
     grid-template-columns: 1fr;
     gap: 20px;
+  }
+
+  .card-imagen {
+    padding-bottom: 70%; /* Proporción ligeramente diferente para móvil */
   }
 
   .card-title {
@@ -808,8 +1020,58 @@ body {
     font-size: 22px;
   }
 
-  .card-imagen {
-    height: 180px;
+  .card-body {
+    padding: 18px;
+  }
+
+  .card-detalles {
+    gap: 12px;
+  }
+
+  /* DETALLE */
+  .detalle-vehiculo {
+    padding: 120px 0 40px 0;
+  }
+  
+  .detalle-content {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+  
+  .detalle-gallery-main img {
+    height: 250px;
+  }
+  
+  .detalle-gallery-thumbs {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+  }
+  
+  .detalle-thumb {
+    height: 60px;
+  }
+  
+  .detalle-header {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .detalle-header h1 {
+    font-size: 28px;
+  }
+  
+  .detalle-precio {
+    font-size: 26px;
+  }
+  
+  .detalle-especificaciones {
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    padding: 16px;
+  }
+  
+  .detalle-spec {
+    font-size: 14px;
   }
 
   /* FOOTER */
@@ -882,12 +1144,42 @@ body {
   }
 
   .card-body {
-    padding: 18px;
+    padding: 14px;
   }
 
   .card-detalles {
     flex-direction: column;
-    gap: 8px;
+    gap: 6px;
+  }
+
+  .card-imagen {
+    padding-bottom: 65%;
+  }
+
+  /* DETALLE */
+  .detalle-gallery-main img {
+    height: 200px;
+  }
+  
+  .detalle-thumb {
+    height: 50px;
+  }
+  
+  .detalle-header h1 {
+    font-size: 24px;
+  }
+  
+  .detalle-precio {
+    font-size: 22px;
+  }
+  
+  .detalle-especificaciones {
+    grid-template-columns: 1fr;
+  }
+  
+  .btn-whatsapp {
+    padding: 14px 24px;
+    font-size: 14px;
   }
 
   .footer-logo-img {
