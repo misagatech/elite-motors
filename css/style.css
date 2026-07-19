@@ -137,7 +137,7 @@ body {
 }
 
 /* ======================================== */
-/* 3. HERO                                 */
+/* 3. HERO - VERSIÓN MEJORADA              */
 /* ======================================== */
 
 .hero {
@@ -145,11 +145,11 @@ body {
   min-height: 900px;
   background: url("../img/hero.png");
   background-size: cover;
-  background-position: center;
+  background-position: center 30%;
   background-repeat: no-repeat;
   display: flex;
   align-items: center;
-  padding-top: 140px;
+  padding-top: 160px;
   padding-left: 8%;
   padding-right: 8%;
   padding-bottom: 180px;
@@ -176,8 +176,8 @@ body {
 }
 
 .hero-logo {
-  width: clamp(180px, 22vw, 250px);
-  margin-bottom: clamp(16px, 2.5vw, 30px);
+  width: clamp(200px, 24vw, 280px);
+  margin-bottom: clamp(20px, 3vw, 35px);
   object-fit: contain;
 }
 
@@ -191,12 +191,12 @@ body {
 }
 
 .hero h1 {
-  font-size: clamp(36px, 5.5vw, 68px);
-  line-height: clamp(38px, 5.8vw, 70px);
-  font-weight: 700;
-  margin-bottom: clamp(16px, 2.5vw, 30px);
+  font-size: clamp(42px, 6.5vw, 78px);
+  line-height: clamp(44px, 6.8vw, 80px);
+  font-weight: 800;
+  margin-bottom: clamp(18px, 2.8vw, 32px);
   color: white;
-  letter-spacing: -1px;
+  letter-spacing: -2px;
   margin-top: 20px;
 }
 
@@ -218,15 +218,15 @@ body {
 
 .btn-gold {
   display: inline-block;
-  padding: clamp(14px, 1.5vw, 18px) clamp(28px, 3vw, 38px);
+  padding: clamp(16px, 1.8vw, 22px) clamp(36px, 4vw, 50px);
   border: 2px solid #D4AF37;
   color: #D4AF37;
   text-decoration: none;
-  border-radius: 10px;
-  font-weight: 600;
-  font-size: clamp(14px, 1.3vw, 18px);
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: clamp(15px, 1.4vw, 19px);
   transition: all 0.35s ease;
-  letter-spacing: 1px;
+  letter-spacing: 2px;
   text-transform: uppercase;
 }
 
@@ -335,92 +335,139 @@ body {
 }
 
 /* ======================================== */
-/* 6. TARJETAS DE VEHÍCULOS - MEJORADAS     */
+/* 6. TARJETAS DE VEHÍCULOS - VERSIÓN PREMIUM */
 /* ======================================== */
 
 .vehiculo-card {
   background: var(--black-secondary);
-  border-radius: 16px;
+  border-radius: 18px;
   overflow: hidden;
   transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   border: 1px solid #1a1a1a;
   display: flex;
   flex-direction: column;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  position: relative;
 }
 
 .vehiculo-card:hover {
-  transform: translateY(-8px);
+  transform: translateY(-12px);
   border-color: var(--gold);
-  box-shadow: 0 20px 60px rgba(212, 175, 55, 0.1);
+  box-shadow: 0 25px 60px rgba(212, 175, 55, 0.15);
+}
+
+/* Efecto de brillo en hover */
+.vehiculo-card::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(212, 175, 55, 0.03) 0%, transparent 70%);
+  opacity: 0;
+  transition: opacity 0.6s ease;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.vehiculo-card:hover::before {
+  opacity: 1;
 }
 
 .card-imagen {
   position: relative;
-  width: 100%;
-  padding-bottom: 75%; /* Proporción 4:3 */
+  aspect-ratio: 16/10;
   overflow: hidden;
-  background: #1a1a1a;
+  background: #0a0a0a;
+  border-radius: 18px 18px 0 0;
   flex-shrink: 0;
 }
 
 .card-imagen img {
-  position: absolute;
-  top: 0;
-  left: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover; /* Recorta la imagen para llenar el espacio */
-  object-position: center;
-  transition: transform 0.6s ease;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 .vehiculo-card:hover .card-imagen img {
-  transform: scale(1.05);
+  transform: scale(1.08);
+}
+
+/* Overlay dorado en hover */
+.card-imagen::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 60%, rgba(212, 175, 55, 0.1) 100%);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  z-index: 1;
+}
+
+.vehiculo-card:hover .card-imagen::after {
+  opacity: 1;
 }
 
 .card-estado {
   position: absolute;
   top: 16px;
   right: 16px;
-  padding: 6px 16px;
-  border-radius: 20px;
-  font-size: 12px;
+  padding: 8px 18px;
+  border-radius: 30px;
+  font-size: 11px;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 1px;
-  backdrop-filter: blur(10px);
+  letter-spacing: 1.5px;
+  backdrop-filter: blur(12px);
   z-index: 2;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
 }
 
 .estado-disponible {
-  background: rgba(46, 213, 115, 0.9);
+  background: rgba(46, 213, 115, 0.92);
   color: #fff;
 }
 
 .estado-vendido {
-  background: rgba(255, 71, 87, 0.9);
+  background: rgba(255, 71, 87, 0.92);
   color: #fff;
 }
 
 .card-body {
-  padding: 24px;
+  padding: 24px 24px 28px;
   flex: 1;
   display: flex;
   flex-direction: column;
+  background: var(--black-secondary);
+  position: relative;
+  z-index: 1;
 }
 
 .card-title {
   font-size: 20px;
   font-weight: 700;
   color: white;
-  margin-bottom: 6px;
+  margin-bottom: 4px;
+  letter-spacing: -0.3px;
+}
+
+.card-title span {
+  color: var(--gold);
+  font-weight: 300;
+  font-size: 14px;
+  letter-spacing: 0.5px;
 }
 
 .card-precio {
-  font-size: 26px;
+  font-size: 28px;
   font-weight: 700;
   color: var(--gold);
   margin-bottom: 16px;
+  font-family: 'Georgia', serif;
+  letter-spacing: 0.5px;
 }
 
 .card-detalles {
@@ -428,48 +475,53 @@ body {
   gap: 20px;
   margin-bottom: 20px;
   padding-bottom: 20px;
-  border-bottom: 1px solid #1a1a1a;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
   flex-wrap: wrap;
 }
 
 .card-detalle-item {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
   color: #aaa;
-  font-size: 14px;
+  font-size: 13px;
+  font-weight: 400;
 }
 
 .card-detalle-item i {
   color: var(--gold);
   width: 16px;
+  font-size: 14px;
 }
 
 .card-btn {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   color: white;
   text-decoration: none;
   font-weight: 600;
-  font-size: 14px;
+  font-size: 13px;
   transition: all 0.3s ease;
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 1.5px;
   margin-top: auto;
+  padding: 12px 0 4px;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .card-btn:hover {
   color: var(--gold);
-  gap: 16px;
+  gap: 20px;
 }
 
 .card-btn i {
   transition: transform 0.3s ease;
+  font-size: 12px;
 }
 
 .card-btn:hover i {
-  transform: translateX(6px);
+  transform: translateX(8px);
 }
 
 .no-vehiculos {
@@ -665,7 +717,7 @@ body {
 }
 
 /* ======================================== */
-/* 9. DETALLE DEL VEHÍCULO                  */
+/* 8. DETALLE DEL VEHÍCULO - PREMIUM        */
 /* ======================================== */
 
 .detalle-vehiculo {
@@ -698,18 +750,24 @@ body {
   margin-bottom: 20px;
 }
 
-/* Galería */
+/* Galería - Mejorada */
 .detalle-gallery-main {
-  border-radius: 16px;
+  border-radius: 18px;
   overflow: hidden;
-  background: #1a1a1a;
+  background: #0a0a0a;
   margin-bottom: 16px;
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.5);
 }
 
 .detalle-gallery-main img {
   width: 100%;
-  height: 400px;
+  height: 420px;
   object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.detalle-gallery-main:hover img {
+  transform: scale(1.02);
 }
 
 .detalle-gallery-thumbs {
@@ -720,23 +778,26 @@ body {
 
 .detalle-thumb {
   width: 100%;
-  height: 80px;
+  height: 90px;
   object-fit: cover;
-  border-radius: 10px;
+  border-radius: 12px;
   cursor: pointer;
   border: 2px solid transparent;
   transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
 .detalle-thumb:hover {
   border-color: var(--gold);
+  transform: translateY(-3px);
 }
 
 .detalle-thumb.active {
   border-color: var(--gold);
+  box-shadow: 0 0 20px rgba(212, 175, 55, 0.2);
 }
 
-/* Información */
+/* Información - Mejorada */
 .detalle-info {
   display: flex;
   flex-direction: column;
@@ -745,40 +806,61 @@ body {
 .detalle-header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
   margin-bottom: 16px;
+  flex-wrap: wrap;
+  gap: 12px;
 }
 
 .detalle-header h1 {
-  font-size: 36px;
-  font-weight: 700;
+  font-size: 38px;
+  font-weight: 800;
   color: white;
+  letter-spacing: -1px;
+}
+
+.detalle-header h1 small {
+  display: block;
+  font-size: 16px;
+  font-weight: 400;
+  color: #888;
+  margin-top: 4px;
+  letter-spacing: 0;
 }
 
 .detalle-estado {
-  padding: 6px 20px;
-  border-radius: 20px;
+  padding: 8px 22px;
+  border-radius: 30px;
   font-size: 13px;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 1.5px;
+  white-space: nowrap;
 }
 
 .detalle-estado.estado-disponible {
-  background: rgba(46, 213, 115, 0.9);
+  background: rgba(46, 213, 115, 0.92);
   color: #fff;
 }
 
 .detalle-estado.estado-vendido {
-  background: rgba(255, 71, 87, 0.9);
+  background: rgba(255, 71, 87, 0.92);
   color: #fff;
 }
 
 .detalle-precio {
-  font-size: 32px;
+  font-size: 36px;
   font-weight: 700;
   color: var(--gold);
   margin-bottom: 24px;
+  font-family: 'Georgia', serif;
+}
+
+.detalle-precio small {
+  font-size: 16px;
+  font-weight: 400;
+  color: #888;
+  font-family: 'Inter', sans-serif;
 }
 
 .detalle-especificaciones {
@@ -786,16 +868,16 @@ body {
   grid-template-columns: 1fr 1fr;
   gap: 16px;
   margin-bottom: 30px;
-  padding: 20px;
+  padding: 24px;
   background: var(--black-secondary);
-  border-radius: 12px;
-  border: 1px solid #1a1a1a;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .detalle-spec {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   color: #ccc;
   font-size: 15px;
 }
@@ -803,28 +885,41 @@ body {
 .detalle-spec i {
   color: var(--gold);
   width: 20px;
+  font-size: 16px;
+}
+
+.detalle-spec strong {
+  color: white;
+  font-weight: 600;
 }
 
 .detalle-descripcion {
   margin-bottom: 30px;
+  padding: 20px 24px;
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 12px;
+  border-left: 3px solid var(--gold);
 }
 
 .detalle-descripcion h3 {
   color: white;
-  font-size: 18px;
-  margin-bottom: 12px;
+  font-size: 16px;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-weight: 600;
 }
 
 .detalle-descripcion p {
   color: #aaa;
-  font-size: 16px;
-  line-height: 1.7;
+  font-size: 15px;
+  line-height: 1.8;
 }
 
 .detalle-acciones {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 12px;
   margin-top: auto;
 }
 
@@ -832,31 +927,92 @@ body {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 12px;
+  gap: 14px;
   padding: 18px 38px;
   background: #25D366;
   color: white;
   text-decoration: none;
-  border-radius: 10px;
+  border-radius: 12px;
   font-weight: 700;
   font-size: 16px;
   transition: all 0.3s ease;
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 1.5px;
 }
 
 .btn-whatsapp:hover {
-  background: #20b85a;
-  transform: translateY(-2px);
-  box-shadow: 0 8px 30px rgba(37, 211, 102, 0.3);
+  background: #1da851;
+  transform: translateY(-3px);
+  box-shadow: 0 12px 40px rgba(37, 211, 102, 0.3);
 }
 
 .btn-whatsapp i {
   font-size: 24px;
 }
 
+/* Vehículos relacionados */
+.vehiculos-relacionados {
+  margin-top: 60px;
+  padding-top: 40px;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.vehiculos-relacionados h3 {
+  font-size: 22px;
+  font-weight: 700;
+  color: white;
+  margin-bottom: 24px;
+  letter-spacing: 1px;
+}
+
+.vehiculos-relacionados h3 span {
+  color: var(--gold);
+}
+
+.relacionados-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.relacionado-card {
+  background: var(--black-secondary);
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid #1a1a1a;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.relacionado-card:hover {
+  transform: translateY(-5px);
+  border-color: var(--gold);
+}
+
+.relacionado-card img {
+  width: 100%;
+  height: 140px;
+  object-fit: cover;
+}
+
+.relacionado-card .info {
+  padding: 14px 16px;
+}
+
+.relacionado-card .info h4 {
+  color: white;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.relacionado-card .info .precio {
+  color: var(--gold);
+  font-size: 16px;
+  font-weight: 700;
+}
+
 /* ======================================== */
-/* 8. RESPONSIVE - MEDIA QUERIES           */
+/* 9. RESPONSIVE - MEDIA QUERIES           */
 /* ======================================== */
 
 /* ---- TABLETS ---- */
@@ -864,7 +1020,7 @@ body {
   .hero {
     padding-left: 6%;
     padding-right: 6%;
-    padding-top: 120px;
+    padding-top: 130px;
     padding-bottom: 120px;
     min-height: 750px;
   }
@@ -874,7 +1030,7 @@ body {
   }
 
   .hero-logo {
-    width: clamp(150px, 20vw, 200px);
+    width: clamp(160px, 22vw, 220px);
   }
 
   .filtros-section {
@@ -883,6 +1039,10 @@ body {
 
   .detalle-content {
     gap: 40px;
+  }
+
+  .relacionados-grid {
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 
@@ -930,10 +1090,10 @@ body {
   .hero {
     height: 100vh;
     min-height: 600px;
-    padding-top: 80px;
+    padding-top: 100px;
     padding-left: 5%;
     padding-right: 5%;
-    padding-bottom: 60px;
+    padding-bottom: 80px;
     align-items: center;
     text-align: center;
     justify-content: center;
@@ -956,7 +1116,7 @@ body {
   }
 
   .hero-logo {
-    width: clamp(140px, 35vw, 180px);
+    width: clamp(160px, 40vw, 200px);
   }
 
   .hero-slogan {
@@ -965,8 +1125,8 @@ body {
   }
 
   .hero h1 {
-    font-size: clamp(32px, 8vw, 48px);
-    line-height: clamp(32px, 8.5vw, 52px);
+    font-size: clamp(34px, 9vw, 48px);
+    line-height: clamp(36px, 9.5vw, 52px);
     margin-top: 10px;
   }
 
@@ -984,8 +1144,8 @@ body {
   }
 
   .btn-gold {
-    padding: 14px 32px;
-    font-size: 14px;
+    padding: 16px 40px;
+    font-size: 15px;
   }
 
   /* FILTROS */
@@ -1002,14 +1162,14 @@ body {
     font-size: 12px;
   }
 
-  /* CATÁLOGO - MEJORADO PARA MÓVIL */
+  /* CATÁLOGO - MÓVIL */
   .catalogo-grid {
     grid-template-columns: 1fr;
-    gap: 20px;
+    gap: 24px;
   }
 
   .card-imagen {
-    padding-bottom: 70%; /* Proporción ligeramente diferente para móvil */
+    aspect-ratio: 4/3;
   }
 
   .card-title {
@@ -1017,11 +1177,11 @@ body {
   }
 
   .card-precio {
-    font-size: 22px;
+    font-size: 24px;
   }
 
   .card-body {
-    padding: 18px;
+    padding: 18px 20px 22px;
   }
 
   .card-detalles {
@@ -1039,7 +1199,7 @@ body {
   }
   
   .detalle-gallery-main img {
-    height: 250px;
+    height: 280px;
   }
   
   .detalle-gallery-thumbs {
@@ -1051,17 +1211,12 @@ body {
     height: 60px;
   }
   
-  .detalle-header {
-    flex-wrap: wrap;
-    gap: 10px;
-  }
-
   .detalle-header h1 {
     font-size: 28px;
   }
   
   .detalle-precio {
-    font-size: 26px;
+    font-size: 28px;
   }
   
   .detalle-especificaciones {
@@ -1072,6 +1227,15 @@ body {
   
   .detalle-spec {
     font-size: 14px;
+  }
+
+  .relacionados-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .relacionado-card img {
+    height: 100px;
   }
 
   /* FOOTER */
@@ -1111,8 +1275,8 @@ body {
 @media (max-width: 400px) {
   .hero {
     min-height: 500px;
-    padding-top: 70px;
-    padding-bottom: 40px;
+    padding-top: 80px;
+    padding-bottom: 50px;
   }
 
   .hero h1 {
@@ -1144,7 +1308,7 @@ body {
   }
 
   .card-body {
-    padding: 14px;
+    padding: 14px 16px 18px;
   }
 
   .card-detalles {
@@ -1153,7 +1317,7 @@ body {
   }
 
   .card-imagen {
-    padding-bottom: 65%;
+    aspect-ratio: 1/1;
   }
 
   /* DETALLE */
@@ -1180,6 +1344,14 @@ body {
   .btn-whatsapp {
     padding: 14px 24px;
     font-size: 14px;
+  }
+
+  .relacionados-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .relacionado-card img {
+    height: 120px;
   }
 
   .footer-logo-img {
