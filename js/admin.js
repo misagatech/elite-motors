@@ -140,11 +140,11 @@ document.getElementById('modalClose')?.addEventListener('click', function() {
   document.getElementById('modalVehiculo').classList.remove('active');
 });
 
-document.getElementById('modalVehiculo')?.addEventListener('click', function(e) {
-  if (e.target === this) {
-    this.classList.remove('active');
-  }
-});
+// document.getElementById('modalVehiculo')?.addEventListener('click', function(e) {
+//   if (e.target === this) {
+//     this.classList.remove('active');
+//   }
+// });
 
 // ========================================
 // 6. EDITAR VEHÍCULO
