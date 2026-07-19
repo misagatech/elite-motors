@@ -2,6 +2,17 @@
 // LOGIN - ELITE MOTORS
 // ========================================
 
+document.addEventListener('DOMContentLoaded', function() {
+  // Si ya está logueado, redirigir al admin
+  if (typeof auth !== 'undefined') {
+    auth.onAuthStateChanged((user) => {
+      if (user && window.location.pathname.includes('login.html')) {
+        window.location.href = 'admin.html';
+      }
+    });
+  }
+});
+
 document.getElementById('loginForm').addEventListener('submit', function(e) {
   e.preventDefault();
   
@@ -27,9 +38,9 @@ document.getElementById('loginForm').addEventListener('submit', function(e) {
     });
 });
 
-// Si ya está logueado, redirigir al admin
-auth.onAuthStateChanged((user) => {
-  if (user && window.location.pathname.includes('login.html')) {
-    window.location.href = 'admin.html';
-  }
-});
+// ========================================
+// CREDENCIALES DE PRUEBA
+// ========================================
+console.log('📋 Credenciales de administrador:');
+console.log('   📧 Email: elitemotors2026colombia@gmail.com');
+console.log('   🔑 Contraseña: Colombia#Elite2026!');
