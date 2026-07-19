@@ -213,13 +213,13 @@ document.getElementById('formVehiculo')?.addEventListener('submit', async functi
   }
 
   const fotosUrls = [];
+  const submitBtn = document.querySelector('.modal-content .btn-gold');
   
   if (files.length > 0) {
     // Mostrar mensaje de subida
-    const btn = document.querySelector('.modal-content .btn-gold');
-    if (btn) {
-      btn.textContent = '⏳ Subiendo fotos...';
-      btn.disabled = true;
+    if (submitBtn) {
+      submitBtn.textContent = '⏳ Subiendo fotos...';
+      submitBtn.disabled = true;
     }
     
     // Subir cada foto a Cloudinary
@@ -254,18 +254,17 @@ document.getElementById('formVehiculo')?.addEventListener('submit', async functi
       } catch (error) {
         console.error('Error al subir foto:', error);
         alert('❌ Error al subir las fotos. Intenta de nuevo.');
-        if (btn) {
-          btn.textContent = 'Guardar';
-          btn.disabled = false;
+        if (submitBtn) {
+          submitBtn.textContent = 'Guardar';
+          submitBtn.disabled = false;
         }
         return;
       }
     }
     
     // Restaurar botón
-    const btn = document.querySelector('.modal-content .btn-gold');
-    if (btn) {
-      btn.textContent = '⏳ Guardando...';
+    if (submitBtn) {
+      submitBtn.textContent = '⏳ Guardando...';
     }
   }
 
@@ -288,10 +287,9 @@ document.getElementById('formVehiculo')?.addEventListener('submit', async functi
     alert('❌ Error al guardar: ' + error.message);
   } finally {
     // Restaurar botón
-    const btn = document.querySelector('.modal-content .btn-gold');
-    if (btn) {
-      btn.textContent = 'Guardar';
-      btn.disabled = false;
+    if (submitBtn) {
+      submitBtn.textContent = 'Guardar';
+      submitBtn.disabled = false;
     }
   }
 });
