@@ -174,9 +174,8 @@ function editarVehiculo(id) {
       document.getElementById('modalVehiculo').classList.add('active');
     });
 }
-
 // ========================================
-// 7. GUARDAR VEHÍCULO (CON NOMBRES AUTOMÁTICOS)
+// 7. GUARDAR VEHÍCULO
 // ========================================
 document.getElementById('formVehiculo')?.addEventListener('submit', async function(e) {
   e.preventDefault();
@@ -202,10 +201,12 @@ document.getElementById('formVehiculo')?.addEventListener('submit', async functi
     descripcion: document.getElementById('descripcion').value
   };
 
-  // Subir imágenes con nombres automáticos
+  // Subir imágenes (mínimo 1, máximo 8)
   const files = document.getElementById('fotos').files;
-  if (files.length > 0 && files.length < 2) {
-    alert('Selecciona al menos 2 fotos (máximo 8)');
+  
+  // 🔥 CAMBIO AQUÍ: mínimo 1 foto en lugar de 2
+  if (files.length > 0 && files.length < 1) {
+    alert('Selecciona al menos 1 foto (máximo 8)');
     return;
   }
   if (files.length > 8) {
