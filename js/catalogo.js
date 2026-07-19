@@ -73,8 +73,8 @@ function renderVehiculos(vehiculos) {
   grid.innerHTML = vehiculos.map(vehiculo => {
     // Usar imagen de Firebase o placeholder
     const imagenUrl = vehiculo.fotos && vehiculo.fotos.length > 0 
-      ? vehiculo.fotos[0] 
-      : 'img/placeholder-car.jpg';
+  ? vehiculo.fotos[0] 
+  : 'https://via.placeholder.com/400x300/1a1a1a/D4AF37?text=Elite+Motors';
     
     return `
     <div class="vehiculo-card">
