@@ -303,7 +303,7 @@ function verFotos(id) {
 // 9. AGREGAR FOTOS A UN VEHÍCULO
 // ========================================
 // ========================================
-// AGREGAR FOTOS - VERSIÓN CLOUDINARY
+// AGREGAR FOTOS - VERSIÓN CLOUDINARY (MÚLTIPLES)
 // ========================================
 function agregarFotos(id) {
   if (!auth.currentUser) {
@@ -312,14 +312,17 @@ function agregarFotos(id) {
     return;
   }
   
-  // 🔥 TUS CREDENCIALES DE CLOUDINARY 🔥
   const cloudName = 'ifuxuvyj'; // ← TU CLOUD NAME
+  
+  // Array para guardar todas las URLs
+  let fotosSubidas = [];
+  let totalFotos = 0;
   
   const widget = cloudinary.createUploadWidget(
     {
       cloudName: cloudName,
-      uploadPreset: 'elite_motors', // ← EL PRESET QUE CREASTE
-      multiple: true,
+      uploadPreset: 'elite_motors',
+      multiple: true, // ← PERMITE MÚLTIPLES FOTOS
       maxFiles: 8,
       sources: ['local', 'url', 'camera'],
       styles: {
@@ -334,10 +337,29 @@ function agregarFotos(id) {
       }
     },
     async (error, result) => {
+      // Cuando se sube una foto exitosamente
       if (!error && result && result.event === 'success') {
+        fotosSubidas.push(result.info.secure_url);
+        totalFotos++;
+        console.log(`📸 Foto ${totalFotos} subida: ${result.info.secure_url}`);
+      }
+      
+      // Cuando se cierra el widget (todas las fotos se han subido o se cerró)
+      if (!error && result && result.event === 'close') {
+        if (fotosSubidas.length === 0) {
+          console.log('⚠️ No se subieron fotos');
+          return;
+        }
+        
         try {
-          const url = result.info.secure_url;
+          // Mostrar mensaje de guardado
+          const btn = document.querySelector('.modal-fotos-acciones .btn-gold');
+          if (btn) {
+            btn.textContent = '⏳ Guardando...';
+            btn.disabled = true;
+          }
           
+          // Obtener el vehículo actual
           const doc = await db.collection('vehiculos').doc(id).get();
           if (!doc.exists) {
             alert('❌ Vehículo no encontrado');
@@ -346,19 +368,31 @@ function agregarFotos(id) {
           
           const v = doc.data();
           const fotosExistentes = v.fotos || [];
-          const nuevasFotos = [...fotosExistentes, url];
           
+          // Combinar fotos existentes con las nuevas
+          const todasLasFotos = [...fotosExistentes, ...fotosSubidas];
+          
+          // Actualizar en Firestore
           await db.collection('vehiculos').doc(id).update({
-            fotos: nuevasFotos
+            fotos: todasLasFotos
           });
           
-          // Recargar el panel y el modal de fotos
+          // Recargar el panel y el modal
           cargarVehiculosAdmin();
           verFotos(id);
           
+          alert(`✅ ${fotosSubidas.length} fotos subidas correctamente`);
+          
         } catch (error) {
-          console.error('Error:', error);
-          alert('❌ Error al guardar la foto');
+          console.error('Error al guardar:', error);
+          alert('❌ Error al guardar las fotos');
+        } finally {
+          // Restaurar botón
+          const btn = document.querySelector('.modal-fotos-acciones .btn-gold');
+          if (btn) {
+            btn.textContent = '📸 Subir Fotos';
+            btn.disabled = false;
+          }
         }
       }
     }
